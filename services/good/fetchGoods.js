@@ -20,10 +20,30 @@ function mockFetchGoodsList(pageIndex = 1, pageSize = 20) {
 
 /** 获取商品列表 */
 export function fetchGoodsList(pageIndex = 1, pageSize = 20) {
-  if (config.useMock) {
-    return mockFetchGoodsList(pageIndex, pageSize);
-  }
+  // if (config.useMock) {
+  //   return mockFetchGoodsList(pageIndex, pageSize);
+  // }
   return new Promise((resolve) => {
-    resolve('real api');
+
+    wx.request({
+      url: 'http://47.99.212.207/site/home/items',
+      method: 'POST',
+      header: {
+        'Content-Type':'application/json'
+      },
+      data: {
+          'pageSize':10,
+          'currentPage':1
+      },
+      success:function(res){
+        if (res) {
+          resolve(res.data.data.listData);
+        }
+     },
+     fail:function(err) {
+          console.log('rjl');  
+     }
+     
+    })
   });
 }

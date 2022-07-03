@@ -50,15 +50,15 @@ Page({
   loadHomePage() {
     wx.stopPullDownRefresh();
 
-    this.setData({
-      pageLoading: true,
-    });
+    // this.setData({
+    //   pageLoading: true,
+    // });
     fetchHome().then(({ swiper, tabList }) => {
-      this.setData({
-        tabList,
-        imgSrcs: swiper,
-        pageLoading: false,
-      });
+      // this.setData({
+      //   tabList,
+      //   imgSrcs: swiper,
+      //   pageLoading: false,
+      // });
       this.loadGoodsList(true);
     });
   },

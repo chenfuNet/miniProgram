@@ -7,9 +7,9 @@
 	<view class="goods-card__main">
 		<view class="goods-card__thumb" bind:tap="clickThumbHandle">
 			<t-image
-			  wx:if="{{ !!goods.thumb }}"
+			  wx:if="{{ !!goods.mainImage }}"
 			  t-class="goods-card__img"
-			  src="{{ goods.thumb }}"
+			  src="{{ goods.mainImage }}"
 			  mode="aspectFill"
 			  lazy-load
 			/>
