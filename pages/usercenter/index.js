@@ -122,10 +122,6 @@ Page({
       wx.getUserProfile({
         desc: '用于完善会员资料',
         success: (res) => {
-          console.log(res.userInfo);
-          wx.showToast({
-            title: res.userInfo.nickName,
-          });
           this.setData({
             userInfo: {
               avatarUrl: res.userInfo.avatarUrl,
@@ -133,6 +129,15 @@ Page({
             },
             currAuthStep: 2,
           });
+          wx.login({
+            success(res) {
+              wx.showToast({
+                title: "session获取成功" + res.code,
+                icon: "none",
+              });
+            },
+          });
+
         },
         fail: () => {
           wx.showToast({
