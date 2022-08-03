@@ -2,6 +2,11 @@ import {
   config
 } from '../../config/index';
 
+import {
+  updateUserInfoWithWeChat,
+  checkUserLoginStatus
+} from '../../model/usercenter';
+
 /** 获取个人中心信息 */
 function mockFetchUserCenter() {
   const {
@@ -10,38 +15,31 @@ function mockFetchUserCenter() {
   const {
     genUsercenter
   } = require('../../model/usercenter');
-  return delay(200).then(() => genUsercenter());
+
+  return delay(200).then(()=>{
+    var result = genUsercenter();
+    result.userInfo.nickName = "abbbbdasd";
+    return result;
+  });
 }
 
 
 /** 获取个人中心信息 */
 export function fetchUserCenter() {
-  wx.showLoading({
-    title: '刷新中',
-  })
   if (config.useMock) {
-    var result = mockFetchUserCenter()
-
-    wx.getUserProfile({
-      desc: '用于完善会员资料',
-      success: (res) => {
-        console.log(res.userInfo);
-        wx.showToast({
-          title: res.userInfo.nickName,
-        })
-      }
-    })
-
-    wx.showToast({
-      title: 'toast',
-    })
-
-    return result;
-
+    return mockFetchUserCenter();
   }
 
 
   return new Promise((resolve) => {
     resolve('real api');
   });
+}
+
+export function updateWeChatUserInfo(s,f) {
+  updateUserInfoWithWeChat(s,f);
+}
+
+export function checkWechatUserLoginStatus(callback) {
+  checkUserLoginStatus(callback);
 }

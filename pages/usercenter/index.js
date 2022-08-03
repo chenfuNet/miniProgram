@@ -1,34 +1,37 @@
 import {
-  fetchUserCenter
+  fetchUserCenter,
+  updateWeChatUserInfo,
+  checkWechatUserLoginStatus
 } from '../../services/usercenter/fetchUsercenter';
 import Toast from 'tdesign-miniprogram/toast/index';
 
 const menuData = [
-  [{
-      title: '收货地址',
-      tit: '',
-      url: '',
-      type: 'address',
-    },
-    {
-      title: '优惠券',
-      tit: '',
-      url: '',
-      type: 'coupon',
-    },
-    {
-      title: '积分',
-      tit: '',
-      url: '',
-      type: 'point',
-    },
-  ],
-  [{
-      title: '退出登录',
-      tit: '',
-      url: '',
-      type: 'help-center',
-    },
+  // [{
+  //     title: '收货地址',
+  //     tit: '',
+  //     url: '',
+  //     type: 'address',
+  //   },
+  //   {
+  //     title: '优惠券',
+  //     tit: '',
+  //     url: '',
+  //     type: 'coupon',
+  //   },
+  //   {
+  //     title: '积分',
+  //     tit: '',
+  //     url: '',
+  //     type: 'point',
+  //   },
+  // ],
+  [
+    // {
+    //   title: '退出登录',
+    //   tit: '',
+    //   url: '',
+    //   type: 'login-out',
+    // },
     {
       title: '客服热线',
       tit: '',
@@ -96,57 +99,20 @@ Page({
 
   onLoad() {
     this.getVersionInfo();
+    //this.gotoUserEditPage();
+    this.getUserLoginRequest();
   },
 
   onShow() {
     this.getTabBar().init();
-    this.init();
+    // this.init();
   },
   onPullDownRefresh() {
-    this.init();
+    // this.init();
   },
 
   init() {
-    // this.fetUseriInfoHandle();
-  },
-
-  userLogin() {
-    const {
-      currAuthStep
-    } = this.data;
-    if (currAuthStep === 2) {
-      wx.navigateTo({
-        url: '/pages/usercenter/person-info/index'
-      });
-    } else {
-      wx.getUserProfile({
-        desc: '用于完善会员资料',
-        success: (res) => {
-          this.setData({
-            userInfo: {
-              avatarUrl: res.userInfo.avatarUrl,
-              nickName: res.userInfo.nickName,
-            },
-            currAuthStep: 2,
-          });
-          wx.login({
-            success(res) {
-              wx.showToast({
-                title: "session获取成功" + res.code,
-                icon: "none",
-              });
-            },
-          });
-
-        },
-        fail: () => {
-          wx.showToast({
-            title: '授权失败',
-            icon: 'error',
-          });
-        }
-      })
-    }
+    // this.gotoUserEditPage();
   },
 
   fetUseriInfoHandle() {
@@ -172,7 +138,22 @@ Page({
         }));
         this.setData({
           userInfo,
-          menuData,
+          menuData:[
+            [{
+              title: '退出登录',
+              tit: '',
+              url: '',
+              type: 'login-out',
+            },
+            {
+              title: '客服热线',
+              tit: '',
+              url: '',
+              type: 'service',
+              icon: 'service',
+            },
+          ]
+          ],
           orderTagInfos: info,
           customerServiceInfo,
           currAuthStep: 2,
@@ -200,7 +181,7 @@ Page({
         this.openMakePhone();
         break;
       }
-      case 'help-center': {
+      case 'login-out': {
         Toast({
           context: this,
           selector: '#t-toast',
@@ -212,6 +193,15 @@ Page({
         this.setData({
           userInfo: {},
           currAuthStep: 1,
+          menuData:[
+            [{
+              title: '客服热线',
+              tit: '',
+              url: '',
+              type: 'service',
+              icon: 'service',
+            }]
+          ],
         });
 
         break;
@@ -288,12 +278,52 @@ Page({
       currAuthStep
     } = this.data;
     if (currAuthStep === 2) {
-      wx.navigateTo({
-        url: '/pages/usercenter/person-info/index'
-      });
+      // wx.navigateTo({
+      //   url: '/pages/usercenter/person-info/index'
+      // });
     } else {
-      this.fetUseriInfoHandle();
+    // this.fetUseriInfoHandle();
+    var success = (res) => {
+      this.setData({
+        userInfo: {
+          avatarUrl: res.avatarUrl,
+          nickName: res.nickName,
+        },
+        menuData:[
+          [{
+            title: '退出登录',
+            tit: '',
+            url: '',
+            type: 'login-out',
+          },
+          {
+            title: '客服热线',
+            tit: '',
+            url: '',
+            type: 'service',
+            icon: 'service',
+          },
+        ]
+        ],
+        currAuthStep: 2
+      });
+    };
+
+    var failure = () => {
+      wx.showToast({
+        title: '授权失败',
+        icon: 'error',
+      });
     }
+
+    updateWeChatUserInfo(success, failure);
+    }
+  },
+
+  getUserLoginRequest() {
+    checkWechatUserLoginStatus(() => {
+      
+    });
   },
 
   getVersionInfo() {
