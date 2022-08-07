@@ -1,4 +1,5 @@
 import { config } from '../../config/index';
+import Toast from 'tdesign-miniprogram/toast/index';
 
 /** 获取商品列表 */
 function mockFetchGood(ID = 0) {
@@ -9,10 +10,41 @@ function mockFetchGood(ID = 0) {
 
 /** 获取商品列表 */
 export function fetchGood(ID = 0) {
-  if (config.useMock) {
+  console.log('rjl___itemtId+'+ID);
+  if (!config.useMock) {
     return mockFetchGood(ID);
   }
   return new Promise((resolve) => {
-    resolve('real api');
+    wx.request({
+      url: 'http://8.136.244.224/web/item/detail',
+      method: 'GET',
+      header: {
+        'Content-Type':'application/json',
+        'Authorization':wx.getStorageSync('userToken')
+      },
+      data: {
+          'itemId':ID,
+      },
+      success:function(res){
+        if (res.data.errorMsg) {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.data.errorMsg,
+          });
+        }
+        else {
+          resolve(res.data.data)
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '商品详情拉取成功',
+          });
+        }
+     },
+     fail:function(err) {
+          console.log('rjl');  
+     }
+    })
   });
 }

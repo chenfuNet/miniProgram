@@ -15,7 +15,7 @@
 			  wx:for-index="index"
 			  wx:key="index"
 			>
-				<t-image src="{{item}}" t-class="swipe-img" />
+				<t-image src="{{item.imageUrl}}" t-class="swipe-img" />
 			</t-swiper-item>
 		</t-swiper>
 		<view class="goods-info">

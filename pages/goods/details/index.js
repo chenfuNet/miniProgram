@@ -297,9 +297,9 @@ Page({
     });
   },
 
-  getDetail(spuId) {
-    Promise.all([fetchGood(spuId), fetchActivityList()]).then((res) => {
-      const [details, activityList] = res;
+  getDetail(itemId) {
+    fetchGood(itemId).then((res) => {
+      const details = res;
       const skuArray = [];
       const {
         skuList,
@@ -310,32 +310,32 @@ Page({
         maxLinePrice,
         soldNum,
       } = details;
-      skuList.forEach((item) => {
-        skuArray.push({
-          skuId: item.skuId,
-          quantity: item.stockInfo ? item.stockInfo.stockQuantity : 0,
-          specInfo: item.specInfo,
-        });
-      });
+      // skuList.forEach((item) => {
+      //   skuArray.push({
+      //     skuId: item.skuId,
+      //     quantity: item.stockInfo ? item.stockInfo.stockQuantity : 0,
+      //     specInfo: item.specInfo,
+      //   });
+      // });
       const promotionArray = [];
-      activityList.forEach((item) => {
-        promotionArray.push({
-          tag: item.promotionSubCode === 'MYJ' ? '满减' : '满折',
-          label: '满100元减99.9元',
-        });
-      });
+      // activityList.forEach((item) => {
+      //   promotionArray.push({
+      //     tag: item.promotionSubCode === 'MYJ' ? '满减' : '满折',
+      //     label: '满100元减99.9元',
+      //   });
+      // });
       this.setData({
         details,
-        activityList,
-        isStock: details.spuStockQuantity > 0,
-        maxSalePrice: maxSalePrice ? parseInt(maxSalePrice) : 0,
-        maxLinePrice: maxLinePrice ? parseInt(maxLinePrice) : 0,
-        minSalePrice: minSalePrice ? parseInt(minSalePrice) : 0,
-        list: promotionArray,
-        skuArray: skuArray,
-        primaryImage,
-        soldout: isPutOnSale === 0,
-        soldNum,
+        // activityList,
+        // isStock: details.spuStockQuantity > 0,
+        // maxSalePrice: maxSalePrice ? parseInt(maxSalePrice) : 0,
+        // maxLinePrice: maxLinePrice ? parseInt(maxLinePrice) : 0,
+        // minSalePrice: minSalePrice ? parseInt(minSalePrice) : 0,
+        // list: promotionArray,
+        // skuArray: skuArray,
+        // primaryImage,
+        // soldout: isPutOnSale === 0,
+        // soldNum,
       });
     });
   },
@@ -422,12 +422,12 @@ Page({
   },
 
   onLoad(query) {
-    const { spuId } = query;
+    const { itemId } = query;
     this.setData({
-      spuId: spuId,
+      itemId: itemId,
     });
-    this.getDetail(spuId);
-    this.getCommentsList(spuId);
-    this.getCommentsStatistics(spuId);
+    this.getDetail(itemId);
+    // this.getCommentsList(spuId);
+    // this.getCommentsStatistics(spuId);
   },
 });
