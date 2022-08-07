@@ -110,12 +110,44 @@ Page({
     });
   },
 
-  goodListAddCartHandle() {
-    Toast({
-      context: this,
-      selector: '#t-toast',
-      message: '点击加入购物车',
-    });
+  goodListAddCartHandle(e) {
+    const { index } = e.detail;
+    const { itemId } = this.data.goodsList[index]; 
+    wx.request({
+      url: 'http://8.136.244.224/web/shopCart/add',
+      method: 'POST',
+      header: {
+        'Content-Type':'application/json',
+        'Authorization':wx.getStorageSync('userToken')
+      },
+      data: {
+          'itemId':itemId,
+          'quantity':1
+      },
+      success:function(res){
+        if (res.data.errorMsg) {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.data.errorMsg,
+          });
+        }
+        else {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '加入购物车成功',
+          });
+        }
+     },
+     fail:function(err) {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '加入购物车失败',
+          });
+     }
+    })
   },
 
   navToSearchPage() {

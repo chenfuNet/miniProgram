@@ -30,7 +30,7 @@ export function fetchGoodsList(pageIndex = 1, pageSize = 20) {
       method: 'POST',
       header: {
         'Content-Type':'application/json',
-        'Authorization':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0IiwiZXhwIjoxNjYwNDQ1MzA0LCJpYXQiOjE2NTk4NDA1MDR9.g8zhh40EFykdIZUaCnYchPr92dFcgMYhWFShBfOnynI'
+        'Authorization':wx.getStorageSync('userToken')
       },
       data: {
           'pageSize':10,
