@@ -1,9 +1,10 @@
-import { fetchUserCenter } from '../../services/usercenter/fetchUsercenter';
+import {
+  fetchUserCenter
+} from '../../services/usercenter/fetchUsercenter';
 import Toast from 'tdesign-miniprogram/toast/index';
 
 const menuData = [
-  [
-    {
+  [{
       title: '收货地址',
       tit: '',
       url: '',
@@ -22,9 +23,8 @@ const menuData = [
       type: 'point',
     },
   ],
-  [
-    {
-      title: '帮助中心',
+  [{
+      title: '退出登录',
       tit: '',
       url: '',
       type: 'help-center',
@@ -39,11 +39,10 @@ const menuData = [
   ],
 ];
 
-const orderTagInfos = [
-  {
+const orderTagInfos = [{
     title: '待付款',
     iconName: 'wallet',
-    orderNum: 0,
+    orderNum: 10,
     tabType: 5,
     status: 1,
   },
@@ -108,7 +107,46 @@ Page({
   },
 
   init() {
-    this.fetUseriInfoHandle();
+    // this.fetUseriInfoHandle();
+  },
+
+  userLogin() {
+    const {
+      currAuthStep
+    } = this.data;
+    if (currAuthStep === 2) {
+      wx.navigateTo({
+        url: '/pages/usercenter/person-info/index'
+      });
+    } else {
+      wx.getUserProfile({
+        desc: '用于完善会员资料',
+        success: (res) => {
+          this.setData({
+            userInfo: {
+              avatarUrl: res.userInfo.avatarUrl,
+              nickName: res.userInfo.nickName,
+            },
+            currAuthStep: 2,
+          });
+          wx.login({
+            success(res) {
+              wx.showToast({
+                title: "session获取成功" + res.code,
+                icon: "none",
+              });
+            },
+          });
+
+        },
+        fail: () => {
+          wx.showToast({
+            title: '授权失败',
+            icon: 'error',
+          });
+        }
+      })
+    }
   },
 
   fetUseriInfoHandle() {
@@ -144,12 +182,18 @@ Page({
     );
   },
 
-  onClickCell({ currentTarget }) {
-    const { type } = currentTarget.dataset;
+  onClickCell({
+    currentTarget
+  }) {
+    const {
+      type
+    } = currentTarget.dataset;
 
     switch (type) {
       case 'address': {
-        wx.navigateTo({ url: '/pages/usercenter/address/list/index' });
+        wx.navigateTo({
+          url: '/pages/usercenter/address/list/index'
+        });
         break;
       }
       case 'service': {
@@ -160,10 +204,16 @@ Page({
         Toast({
           context: this,
           selector: '#t-toast',
-          message: '你点击了帮助中心',
+          message: '退出登录成功',
           icon: '',
           duration: 1000,
         });
+
+        this.setData({
+          userInfo: {},
+          currAuthStep: 1,
+        });
+
         break;
       }
       case 'point': {
@@ -177,7 +227,9 @@ Page({
         break;
       }
       case 'coupon': {
-        wx.navigateTo({ url: '/pages/coupon/coupon-list/index' });
+        wx.navigateTo({
+          url: '/pages/coupon/coupon-list/index'
+        });
         break;
       }
       default: {
@@ -197,22 +249,32 @@ Page({
     const status = e.detail.tabType;
 
     if (status === 0) {
-      wx.navigateTo({ url: '/pages/order/after-service-list/index' });
+      wx.navigateTo({
+        url: '/pages/order/after-service-list/index'
+      });
     } else {
-      wx.navigateTo({ url: `/pages/order/order-list/index?status=${status}` });
+      wx.navigateTo({
+        url: `/pages/order/order-list/index?status=${status}`
+      });
     }
   },
 
   jumpAllOrder() {
-    wx.navigateTo({ url: '/pages/order/order-list/index' });
+    wx.navigateTo({
+      url: '/pages/order/order-list/index'
+    });
   },
 
   openMakePhone() {
-    this.setData({ showMakePhone: true });
+    this.setData({
+      showMakePhone: true
+    });
   },
 
   closeMakePhone() {
-    this.setData({ showMakePhone: false });
+    this.setData({
+      showMakePhone: false
+    });
   },
 
   call() {
@@ -222,9 +284,13 @@ Page({
   },
 
   gotoUserEditPage() {
-    const { currAuthStep } = this.data;
+    const {
+      currAuthStep
+    } = this.data;
     if (currAuthStep === 2) {
-      wx.navigateTo({ url: '/pages/usercenter/person-info/index' });
+      wx.navigateTo({
+        url: '/pages/usercenter/person-info/index'
+      });
     } else {
       this.fetUseriInfoHandle();
     }
@@ -232,7 +298,10 @@ Page({
 
   getVersionInfo() {
     const versionInfo = wx.getAccountInfoSync();
-    const { version, envVersion = __wxConfig } = versionInfo.miniProgram;
+    const {
+      version,
+      envVersion = __wxConfig
+    } = versionInfo.miniProgram;
     this.setData({
       versionNo: envVersion === 'release' ? version : envVersion,
     });

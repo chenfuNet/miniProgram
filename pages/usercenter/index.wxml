@@ -5,7 +5,7 @@
   phone-class="custom-phone-class"
   avatar-class="custome-avatar-class"
   currAuthStep="{{currAuthStep}}"
-  bind:gotoUserEditPage="gotoUserEditPage"
+  bind:gotoUserEditPage="userLogin"
 />
 <view class="content-wrapper">
 	<view class='order-group-wrapper'>
