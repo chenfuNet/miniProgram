@@ -26,10 +26,11 @@ export function fetchGoodsList(pageIndex = 1, pageSize = 20) {
   return new Promise((resolve) => {
 
     wx.request({
-      url: 'http://47.99.212.207/site/home/items',
+      url: 'http://8.136.244.224/web/itemCollection/home',
       method: 'POST',
       header: {
-        'Content-Type':'application/json'
+        'Content-Type':'application/json',
+        'Authorization':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0IiwiZXhwIjoxNjYwNDQ1MzA0LCJpYXQiOjE2NTk4NDA1MDR9.g8zhh40EFykdIZUaCnYchPr92dFcgMYhWFShBfOnynI'
       },
       data: {
           'pageSize':10,
