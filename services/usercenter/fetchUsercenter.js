@@ -37,7 +37,12 @@ export function fetchUserCenter() {
 }
 
 export function updateWeChatUserInfo(s,f) {
-  updateUserInfoWithWeChat(s,f);
+  checkUserLoginStatus(()=>{
+    console.log('验证登陆状态成功')
+    updateUserInfoWithWeChat(s,f);
+    // wx.setStorageSync('userToken', 12344567)
+    // console.log('获取缓存token',wx.getStorageSync('userToken'))
+  });
 }
 
 export function checkWechatUserLoginStatus(callback) {

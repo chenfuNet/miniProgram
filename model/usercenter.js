@@ -71,14 +71,11 @@ export function updateUserInfoWithWeChat(s,f) {
       userInfo.avatarUrl = res.userInfo.avatarUrl;
       userInfo.nickName = res.userInfo.nickName;
       s(userInfo);
-      // wx.login({
-      //   success(res) {
-      //     this.userInfo.sessionId = res.code;
-      //   },
-      // });
     },
     fail: () => {
-      f();
+      userInfo.avatarUrl = "https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg";
+      userInfo.nickName = "用户10011";
+      s(userInfo);
     }
   })
 }
@@ -87,6 +84,7 @@ export function updateUserInfoWithWeChat(s,f) {
 export function checkUserLoginStatus(s) {
   if (userInfo.loginCode.length > 0) {//已登陆 获得用户session
     console.log('zdy-----已登录')
+    s()
   } else {//未登录
     wx.login({
       success(res) {
@@ -94,7 +92,7 @@ export function checkUserLoginStatus(s) {
           //发起网络请求
           userInfo.loginCode = res.code
           wx.request({
-            url: 'http://8.136.244.224/api/user/thirdLogin',
+            url: 'http://8.136.244.224/web/user/thirdLogin',
             method: 'POST',
             header: {
               'Content-Type':'application/json'
@@ -105,23 +103,20 @@ export function checkUserLoginStatus(s) {
             },
             success:function(res){
               if (res) {
-                console.log('zdy-----请求成功' + res.data)
+                console.log('zdy-----请求成功' + res.data.errorMsg)
+                wx.setStorageSync('userToken', res.data.token)
               }
            },
            fail:function(err) {
                 console.log('zdy-----请求失败'+err.errMsg);  
            }
           })      
-          console.log('zdy-----登录成功' + res.code)
+          s()
+          console.log('登录成功' + res.code)
         } else {
           console.log('zdy-----登录失败！' + res.errMsg)
         }
       }
   });
-    wx.login({
-      success(res) {
-        this.userInfo.sessionId = res.code;
-      },
-    });
   }
 }
