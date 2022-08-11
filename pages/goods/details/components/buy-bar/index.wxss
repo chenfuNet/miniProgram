@@ -81,7 +81,7 @@
 .bar-separately {
   background: #ffece9;
   color: #fa4126;
-  border-radius: 40rpx 0 0 40rpx;
+  border-radius: 40rpx;
 }
 
 .bar-buy {

@@ -1,12 +1,18 @@
 import Toast from 'tdesign-miniprogram/toast/index';
-import { fetchGood } from '../../../services/good/fetchGood';
-import { fetchActivityList } from '../../../services/activity/fetchActivityList';
+import {
+  fetchGood
+} from '../../../services/good/fetchGood';
+import {
+  fetchActivityList
+} from '../../../services/activity/fetchActivityList';
 import {
   getGoodsDetailsCommentList,
   getGoodsDetailsCommentsCount,
 } from '../../../services/good/fetchGoodsDetailsComments';
 
-import { cdnBase } from '../../../config/index';
+import {
+  cdnBase
+} from '../../../config/index';
 
 const imgPrefix = `${cdnBase}/`;
 
@@ -37,8 +43,7 @@ Page({
     recLeftImg,
     recRightImg,
     details: {},
-    goodsTabArray: [
-      {
+    goodsTabArray: [{
         name: '商品',
         value: '', // 空字符串代表置顶
       },
@@ -49,8 +54,7 @@ Page({
     ],
     storeLogo: `${imgPrefix}common/store-logo.png`,
     storeName: '云mall标准版旗舰店',
-    jumpArray: [
-      {
+    jumpArray: [{
         title: '首页',
         url: '/pages/home/home',
         iconName: 'home',
@@ -82,7 +86,9 @@ Page({
     maxSalePrice: 0,
     list: [],
     spuId: '',
-    navigation: { type: 'fraction' },
+    navigation: {
+      type: 'fraction'
+    },
     current: 0,
     autoplay: true,
     duration: 500,
@@ -113,29 +119,42 @@ Page({
   },
 
   toNav(e) {
-    const { url } = e.detail;
+    const {
+      url
+    } = e.detail;
     wx.switchTab({
       url: url,
     });
   },
 
   showCurImg(e) {
-    const { index } = e.detail;
-    const { images } = this.data.details;
+    const {
+      index
+    } = e.detail;
+    const {
+      images
+    } = this.data.details;
     wx.previewImage({
       current: images[index],
       urls: images, // 需要预览的图片http链接列表
     });
   },
 
-  onPageScroll({ scrollTop }) {
+  onPageScroll({
+    scrollTop
+  }) {
     const goodsTab = this.selectComponent('#goodsTab');
     goodsTab && goodsTab.onScroll(scrollTop);
   },
 
   chooseSpecItem(e) {
-    const { specList } = this.data.details;
-    const { selectedSku, isAllSelectedSku } = e.detail;
+    const {
+      specList
+    } = this.data.details;
+    const {
+      selectedSku,
+      isAllSelectedSku
+    } = e.detail;
     if (!isAllSelectedSku) {
       this.setData({
         selectSkuSellsPrice: 0,
@@ -148,7 +167,10 @@ Page({
   },
 
   getSkuItem(specList, selectedSku) {
-    const { skuArray, primaryImage } = this.data;
+    const {
+      skuArray,
+      primaryImage
+    } = this.data;
     const selectedSkuValues = this.getSelectedSkuValues(specList, selectedSku);
     let selectedAttrStr = ` 件  `;
     selectedSkuValues.forEach((item) => {
@@ -221,18 +243,51 @@ Page({
   },
 
   addCart() {
-    const { isAllSelectedSku } = this.data;
-    Toast({
-      context: this,
-      selector: '#t-toast',
-      message: isAllSelectedSku ? '点击加入购物车' : '请选择规格',
-      icon: '',
-      duration: 1000,
-    });
+    const {
+      itemId
+    } = this.data;
+    wx.request({
+      url: 'http://8.136.244.224/web/shopCart/add',
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': wx.getStorageSync('userToken')
+      },
+      data: {
+        'itemId': itemId,
+        'quantity': 1
+      },
+      success: function (res) {
+        if (res.data.errorMsg) {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.data.errorMsg,
+          });
+        } else {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '加入购物车成功',
+          });
+        }
+      },
+      fail: function (err) {
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '加入购物车失败',
+        });
+      }
+    })
+    this.handlePopupHide();
   },
 
   gotoBuy(type) {
-    const { isAllSelectedSku, buyNum } = this.data;
+    const {
+      isAllSelectedSku,
+      buyNum
+    } = this.data;
     if (!isAllSelectedSku) {
       Toast({
         context: this,
@@ -249,8 +304,7 @@ Page({
       storeId: '1',
       spuId: this.data.spuId,
       goodsName: this.data.details.title,
-      skuId:
-        type === 1 ? this.data.skuList[0].skuId : this.data.selectItem.skuId,
+      skuId: type === 1 ? this.data.skuList[0].skuId : this.data.selectItem.skuId,
     };
     let urlQueryStr = obj2Params({
       goodsRequestList: JSON.stringify([query]),
@@ -263,7 +317,9 @@ Page({
   },
 
   specsConfirm() {
-    const { buyType } = this.data;
+    const {
+      buyType
+    } = this.data;
     if (buyType === 1) {
       this.gotoBuy();
     } else {
@@ -285,7 +341,9 @@ Page({
   },
 
   promotionChange(e) {
-    const { index } = e.detail;
+    const {
+      index
+    } = e.detail;
     wx.navigateTo({
       url: `/pages/promotion-detail/index?promotion_id=${index}`,
     });
@@ -344,7 +402,9 @@ Page({
     try {
       const code = 'Success';
       const data = await getGoodsDetailsCommentList();
-      const { homePageComments } = data;
+      const {
+        homePageComments
+      } = data;
       if (code.toUpperCase() === 'SUCCESS') {
         const nextState = {
           commentsList: homePageComments.map((item) => {
@@ -353,9 +413,8 @@ Page({
               userName: item.userName || '',
               commentScore: item.commentScore,
               commentContent: item.commentContent || '用户未填写评价',
-              userHeadUrl: item.isAnonymity
-                ? this.anonymityAvatar
-                : item.userHeadUrl || this.anonymityAvatar,
+              userHeadUrl: item.isAnonymity ?
+                this.anonymityAvatar : item.userHeadUrl || this.anonymityAvatar,
             };
           }),
         };
@@ -368,7 +427,9 @@ Page({
 
   onShareAppMessage() {
     // 自定义的返回信息
-    const { selectedAttrStr } = this.data;
+    const {
+      selectedAttrStr
+    } = this.data;
     let shareSubTitle = '';
     if (selectedAttrStr.indexOf('件') > -1) {
       const count = selectedAttrStr.indexOf('件');
@@ -422,7 +483,9 @@ Page({
   },
 
   onLoad(query) {
-    const { itemId } = query;
+    const {
+      itemId
+    } = query;
     this.setData({
       itemId: itemId,
     });
