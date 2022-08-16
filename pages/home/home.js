@@ -50,21 +50,22 @@ Page({
   loadHomePage() {
     wx.stopPullDownRefresh();
 
-    // this.setData({
-    //   pageLoading: true,
-    // });
-    fetchHome().then(({ swiper, tabList }) => {
-      // this.setData({
-      //   tabList,
-      //   imgSrcs: swiper,
-      //   pageLoading: false,
-      // });
+    this.setData({
+      pageLoading: true,
+    });
+    fetchHome().then(({
+      tabList
+    }) => {
+      this.setData({
+        tabList,
+        pageLoading: false,
+      });
       this.loadGoodsList(true);
     });
   },
 
   tabChangeHandle(e) {
-    this.privateData.tabIndex = e.detail;
+    this.privateData.tabIndex = e.detail.value;
     this.loadGoodsList(true);
   },
 
@@ -89,73 +90,95 @@ Page({
     }
 
     try {
-      const nextList = await fetchGoodsList(pageIndex, pageSize);
-      this.setData({
-        goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
-        goodsListLoadStatus: 0,
-      });
-
+      const nextList = await fetchGoodsList(this.privateData.tabIndex, pageIndex, pageSize);
+      const tabIndex = this.privateData.tabIndex;
+      if (tabIndex == 0) {
+        this.setData({
+          goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
+          goodsListLoadStatus: 2,
+        });
+      } else {
+        this.setData({
+          goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
+          goodsListLoadStatus: 0,
+        });
+      }
       this.goodListPagination.index = pageIndex;
       this.goodListPagination.num = pageSize;
     } catch (err) {
-      this.setData({ goodsListLoadStatus: 3 });
+      this.setData({
+        goodsListLoadStatus: 3
+      });
     }
   },
 
   goodListClickHandle(e) {
-    const { index } = e.detail;
-    const { itemId } = this.data.goodsList[index];
+    const {
+      index
+    } = e.detail;
+    const {
+      itemId
+    } = this.data.goodsList[index];
     wx.navigateTo({
       url: `/pages/goods/details/index?itemId=${itemId}`,
     });
   },
 
   goodListAddCartHandle(e) {
-    const { index } = e.detail;
-    const { itemId } = this.data.goodsList[index]; 
+    const {
+      index
+    } = e.detail;
+    const {
+      itemId
+    } = this.data.goodsList[index];
     wx.request({
       url: 'http://8.136.244.224/web/shopCart/add',
       method: 'POST',
       header: {
-        'Content-Type':'application/json',
-        'Authorization':wx.getStorageSync('userToken')
+        'Content-Type': 'application/json',
+        'Authorization': wx.getStorageSync('userToken')
       },
       data: {
-          'itemId':itemId,
-          'quantity':1
+        'itemId': itemId,
+        'quantity': 1
       },
-      success:function(res){
+      success: function (res) {
         if (res.data.errorMsg) {
           Toast({
             context: this,
             selector: '#t-toast',
             message: res.data.errorMsg,
           });
-        }
-        else {
+        } else {
           Toast({
             context: this,
             selector: '#t-toast',
             message: '加入购物车成功',
           });
         }
-     },
-     fail:function(err) {
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: '加入购物车失败',
-          });
-     }
+      },
+      fail: function (err) {
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '加入购物车失败',
+        });
+      }
     })
   },
 
   navToSearchPage() {
-    wx.navigateTo({ url: '/pages/goods/search/index' });
+    wx.navigateTo({
+      url: '/pages/goods/search/index'
+    });
   },
 
-  navToActivityDetail({ detail }) {
-    const { index: promotionID = 0 } = detail || {};
+  navToActivityDetail({
+    detail
+  }) {
+    const {
+      index: promotionID = 0
+    } = detail || {};
     wx.navigateTo({
       url: `/pages/promotion-detail/index?promotion_id=${promotionID}`,
     });
