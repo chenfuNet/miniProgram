@@ -436,9 +436,9 @@ Page({
       shareSubTitle = selectedAttrStr.slice(count + 1, selectedAttrStr.length);
     }
     const customInfo = {
-      imageUrl: this.data.details.primaryImage,
+      imageUrl: this.data.details.images[0],
       title: this.data.details.title + shareSubTitle,
-      path: `/pages/goods/details/index?spuId=${this.data.spuId}`,
+      path: `/pages/goods/details/index?itemId=${this.data.itemId}`,
     };
     return customInfo;
   },
