@@ -40,8 +40,8 @@ export function updateWeChatUserInfo(s,f) {
   checkUserLoginStatus(()=>{
     console.log('验证登陆状态成功')
     updateUserInfoWithWeChat(s,f);
-    // wx.setStorageSync('userToken', 12344567)
-    // console.log('获取缓存token',wx.getStorageSync('userToken'))
+    wx.setStorageSync('userToken', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0IiwiZXhwIjoxNjYwNDQ1MzA0LCJpYXQiOjE2NTk4NDA1MDR9.g8zhh40EFykdIZUaCnYchPr92dFcgMYhWFShBfOnynI')
+    console.log('获取缓存token',wx.getStorageSync('userToken'))
   });
 }
 

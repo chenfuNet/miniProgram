@@ -15,7 +15,7 @@
 	 wx:for-index="si"
 	 wx:key="storeId"
 	>
-		<view class="cart-store">
+		<!-- <view class="cart-store">
 			<t-icon
 			 size="40rpx"
 			 color="{{store.isSelected ? '#FA4126' : '#BBBBBB'}}"
@@ -36,14 +36,14 @@
 				</view>
 				<view class="get-coupon" catch:tap="gotoCoupons">优惠券</view>
 			</view>
-		</view>
+		</view> -->
 		<block
 		 wx:for="{{store.promotionGoodsList}}"
 		 wx:for-item="promotion"
 		 wx:for-index="promoindex"
 		 wx:key="promoindex"
 		>
-			<view
+			<!-- <view
 			 class="promotion-wrap"
 			 wx:if="{{handlePromotion.hasPromotion(promotion.promotionCode)}}"
 			 bindtap="gotoBuyMore"
@@ -60,7 +60,7 @@
 					</view>
 					<t-icon name="chevron-right" size="32rpx" color="#BBBBBB" />
 				</view>
-			</view>
+			</view> -->
 			<view
 			 class="goods-item"
 			 wx:for="{{promotion.goodsPromotionList}}"
@@ -71,12 +71,12 @@
 				<swipeout right-width="{{ 72 }}">
 					<view class="goods-item-info">
 						<view class="check-wrap" catchtap="selectGoods" data-goods="{{goods}}">
-							<t-icon
+							<!-- <t-icon
 							 size="40rpx"
 							 color="{{goods.isSelected ? '#FA4126' : '#BBBBBB'}}"
 							 name="{{goods.isSelected ? 'check-circle-filled' : 'circle'}}"
 							 class="check"
-							/>
+							/> -->
 						</view>
 						<view class="goods-sku-info">
 							<goods-card
@@ -89,12 +89,12 @@
 							 catchspecs="specsTap"
 							 catchclick="goGoodsDetail"
 							>
-								<view slot="thumb-cover" class="stock-mask" wx:if="{{goods.shortageStock || goods.stockQuantity <= 3}}">
+								<!-- <view slot="thumb-cover" class="stock-mask" wx:if="{{goods.shortageStock || goods.stockQuantity <= 3}}">
 									仅剩{{goods.stockQuantity}}件
-								</view>
+								</view> -->
 								<view slot="append-body" class="goods-stepper">
-									<view class="stepper-tip" wx:if="{{goods.shortageStock}}">库存不足</view>
-									<t-stepper
+									<!-- <view class="stepper-tip" wx:if="{{goods.shortageStock}}">库存不足</view> -->
+									<!-- <t-stepper
 									 classname="stepper-info"
 									 value="{{goods.quantity}}"
 									 min="{{1}}"
@@ -106,7 +106,7 @@
 									 catchblur="input"
 									 catchoverlimit="overlimit"
 									 theme="grey"
-									/>
+									/> -->
 								</view>
 							</goods-card>
 						</view>
@@ -136,7 +136,7 @@
 				<swipeout right-width="{{ 72 }}">
 					<view class="goods-item-info">
 						<view class="check-wrap">
-							<view class="unCheck-icon" />
+							<!-- <view class="unCheck-icon" /> -->
 						</view>
 						<view class="goods-sku-info">
 							<goods-card
@@ -149,9 +149,9 @@
 							 catchspecs="specsTap"
 							 catchclick="goGoodsDetail"
 							>
-								<view slot="thumb-cover" class="no-storage-mask" wx:if="{{goods.stockQuantity <=0}}">
+								<!-- <view slot="thumb-cover" class="no-storage-mask" wx:if="{{goods.stockQuantity <=0}}">
 									<view class="no-storage-content">无货</view>
-								</view>
+								</view> -->
 							</goods-card>
 						</view>
 					</view>

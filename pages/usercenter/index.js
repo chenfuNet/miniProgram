@@ -99,7 +99,6 @@ Page({
 
   onLoad() {
     this.getVersionInfo();
-    //this.gotoUserEditPage();
     this.getUserLoginRequest();
   },
 
@@ -112,7 +111,23 @@ Page({
   },
 
   init() {
-    // this.gotoUserEditPage();
+
+  },
+
+  onShareTimeline() {
+    return {
+      title:"shareTest",
+      path:"pages/usercenter/index",
+      imageUrl:""
+    }
+  },
+
+  onShareAppMessage() {
+    return {
+      title:"shareTest",
+      path:"pages/usercenter/index",
+      imageUrl:""
+    }
   },
 
   fetUseriInfoHandle() {
@@ -138,21 +153,21 @@ Page({
         }));
         this.setData({
           userInfo,
-          menuData:[
+          menuData: [
             [{
-              title: '退出登录',
-              tit: '',
-              url: '',
-              type: 'login-out',
-            },
-            {
-              title: '客服热线',
-              tit: '',
-              url: '',
-              type: 'service',
-              icon: 'service',
-            },
-          ]
+                title: '退出登录',
+                tit: '',
+                url: '',
+                type: 'login-out',
+              },
+              {
+                title: '客服热线',
+                tit: '',
+                url: '',
+                type: 'service',
+                icon: 'service',
+              },
+            ]
           ],
           orderTagInfos: info,
           customerServiceInfo,
@@ -181,6 +196,12 @@ Page({
         this.openMakePhone();
         break;
       }
+      case 'gotoShopCar': {
+        wx.switchTab({
+          url: '/pages/cart/index',
+        });
+        break;
+      }
       case 'login-out': {
         Toast({
           context: this,
@@ -189,11 +210,11 @@ Page({
           icon: '',
           duration: 1000,
         });
-
+        wx.setStorageSync('userToken', "")
         this.setData({
           userInfo: {},
           currAuthStep: 1,
-          menuData:[
+          menuData: [
             [{
               title: '客服热线',
               tit: '',
@@ -282,47 +303,53 @@ Page({
       //   url: '/pages/usercenter/person-info/index'
       // });
     } else {
-    // this.fetUseriInfoHandle();
-    var success = (res) => {
-      this.setData({
-        userInfo: {
-          avatarUrl: res.avatarUrl,
-          nickName: res.nickName,
-        },
-        menuData:[
-          [{
-            title: '退出登录',
-            tit: '',
-            url: '',
-            type: 'login-out',
+      // this.fetUseriInfoHandle();
+      var success = (res) => {
+        this.setData({
+          userInfo: {
+            avatarUrl: res.avatarUrl,
+            nickName: res.nickName,
           },
-          {
-            title: '客服热线',
-            tit: '',
-            url: '',
-            type: 'service',
-            icon: 'service',
-          },
-        ]
-        ],
-        currAuthStep: 2
-      });
-    };
+          menuData: [
+            [{
+                title: '退出登录',
+                tit: '',
+                url: '',
+                type: 'login-out',
+              },
+              {
+                title: '去购物车',
+                tit: '',
+                url: '',
+                type: 'gotoShopCar',
+              },
+              {
+                title: '客服热线',
+                tit: '',
+                url: '',
+                type: 'service',
+                icon: 'service',
+              },
+            ]
+          ],
+          currAuthStep: 2
+        });
+      };
 
-    var failure = () => {
-      wx.showToast({
-        title: '授权失败',
-        icon: 'error',
-      });
-    }
+      var failure = () => {
+        wx.showToast({
+          title: '授权失败',
+          icon: 'error',
+        });
+      }
 
-    updateWeChatUserInfo(success, failure);
+      updateWeChatUserInfo(success, failure);
     }
   },
 
   getUserLoginRequest() {
     checkWechatUserLoginStatus(() => {
-      
+      console.log('zdy-------登录验证成功')
     });
   },
 

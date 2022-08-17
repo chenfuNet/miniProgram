@@ -1,6 +1,6 @@
 const requestInfo = {
-  requestUrl:"http://8.136.244.224",
-  loginApi:"/api/user/thirdLogin"
+  requestUrl: "http://8.136.244.224",
+  loginApi: "/api/user/thirdLogin"
 }
 
 const userInfo = {
@@ -8,8 +8,8 @@ const userInfo = {
   nickName: 'TDesign1 🌟',
   phoneNumber: '13438358888',
   gender: 2,
-  sessionId:"",
-  loginCode:"",
+  sessionId: "",
+  loginCode: "",
 };
 const countsData = [{
     num: 2,
@@ -64,7 +64,7 @@ export function genUsercenter() {
   };
 }
 
-export function updateUserInfoWithWeChat(s,f) {
+export function updateUserInfoWithWeChat(s, f) {
   wx.getUserProfile({
     desc: '用于完善会员资料',
     success: (res) => {
@@ -82,10 +82,10 @@ export function updateUserInfoWithWeChat(s,f) {
 
 
 export function checkUserLoginStatus(s) {
-  if (userInfo.loginCode.length > 0) {//已登陆 获得用户session
+  if (wx.getStorageSync('userToken').length > 0) { //已登陆 获得用户session
     console.log('zdy-----已登录')
     s()
-  } else {//未登录
+  } else { //未登录
     wx.login({
       success(res) {
         if (res.code) {
@@ -95,28 +95,30 @@ export function checkUserLoginStatus(s) {
             url: 'http://8.136.244.224/web/user/thirdLogin',
             method: 'POST',
             header: {
-              'Content-Type':'application/json'
+              'Content-Type': 'application/json'
             },
             data: {
-                'source':1,
-                'code':userInfo.loginCode
+              'source': 1,
+              'code': userInfo.loginCode
             },
-            success:function(res){
-              if (res) {
-                console.log('zdy-----请求成功' + res.data.errorMsg)
+            success: function (res) {
+              if (res.data.errorMsg) {
+                console.log('zdy-----接口报错：' + res.data.errorMsg)
+              } else {
+                console.log('zdy-----请求成功：' + res.data.token)
                 wx.setStorageSync('userToken', res.data.token)
+                s()
               }
-           },
-           fail:function(err) {
-                console.log('zdy-----请求失败'+err.errMsg);  
-           }
-          })      
-          s()
+            },
+            fail: function (err) {
+              console.log('zdy-----请求失败' + err.errMsg);
+            }
+          })
           console.log('登录成功' + res.code)
         } else {
           console.log('zdy-----登录失败！' + res.errMsg)
         }
       }
-  });
+    });
   }
 }
