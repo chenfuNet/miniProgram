@@ -132,7 +132,7 @@ Page({
       itemId
     } = this.data.goodsList[index];
     wx.request({
-      url: 'http://8.136.244.224/web/shopCart/add',
+      url: 'http://47.98.117.117/web/shopCart/add',
       method: 'POST',
       header: {
         'Content-Type': 'application/json',

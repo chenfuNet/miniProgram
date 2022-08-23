@@ -16,7 +16,7 @@ export function fetchGood(ID = 0) {
   }
   return new Promise((resolve) => {
     wx.request({
-      url: 'http://8.136.244.224/web/item/detail',
+      url: 'http://47.98.117.117/web/item/detail',
       method: 'GET',
       header: {
         'Content-Type':'application/json',

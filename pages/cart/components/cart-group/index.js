@@ -10,31 +10,39 @@ Component({
     storeGoods: {
       type: Array,
       observer(storeGoods) {
-        for (const store of storeGoods) {
-          for (const activity of store.promotionGoodsList) {
-            for (const goods of activity.goodsPromotionList) {
-              goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
-            }
-          }
-          for (const goods of store.shortageGoodsList) {
-            goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
-          }
-        }
+        // for (const store of storeGoods) {
+        //   for (const activity of store.promotionGoodsList) {
+        //     for (const goods of activity.goodsPromotionList) {
+        //       goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
+        //     }
+        //   }
+        //   for (const goods of store.shortageGoodsList) {
+        //     goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
+        //   }
+        // }
 
-        this.setData({ _storeGoods: storeGoods });
+        this.setData({
+          _storeGoods: storeGoods
+        });
       },
     },
     invalidGoodItems: {
       type: Array,
       observer(invalidGoodItems) {
-        invalidGoodItems.forEach((goods) => {
-          goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
+        // invalidGoodItems.forEach((goods) => {
+        //   goods.specs = goods.specInfo.map((item) => item.specValue); // 目前仅展示商品已选规格的值
+        // });
+        this.setData({
+          _invalidGoodItems: invalidGoodItems
         });
-        this.setData({ _invalidGoodItems: invalidGoodItems });
       },
     },
-    thumbWidth: { type: null },
-    thumbHeight: { type: null },
+    thumbWidth: {
+      type: null
+    },
+    thumbHeight: {
+      type: null
+    },
   },
 
   data: {
@@ -49,8 +57,12 @@ Component({
   methods: {
     // 删除商品
     deleteGoods(e) {
-      const { goods } = e.currentTarget.dataset;
-      this.triggerEvent('delete', { goods });
+      const {
+        goods
+      } = e.currentTarget.dataset;
+      this.triggerEvent('delete', {
+        goods
+      });
     },
 
     // 清空失效商品
@@ -60,7 +72,9 @@ Component({
 
     // 选中商品
     selectGoods(e) {
-      const { goods } = e.currentTarget.dataset;
+      const {
+        goods
+      } = e.currentTarget.dataset;
       this.triggerEvent('selectgoods', {
         goods,
         isSelected: !goods.isSelected,
@@ -74,8 +88,12 @@ Component({
       });
     },
     changeStepper(e) {
-      const { value } = e.detail;
-      const { goods } = e.currentTarget.dataset;
+      const {
+        value
+      } = e.detail;
+      const {
+        goods
+      } = e.currentTarget.dataset;
       let num = value;
       if (value > goods.stack) {
         num = goods.stack;
@@ -84,17 +102,21 @@ Component({
     },
 
     input(e) {
-      const { value } = e.detail;
-      const { goods } = e.currentTarget.dataset;
+      const {
+        value
+      } = e.detail;
+      const {
+        goods
+      } = e.currentTarget.dataset;
       const num = value;
       this.changeQuantity(num, goods);
     },
 
     overlimit(e) {
       const text =
-        e.detail.type === 'minus'
-          ? '该商品数量不能减少了哦'
-          : '同一商品最多购买999件';
+        e.detail.type === 'minus' ?
+        '该商品数量不能减少了哦' :
+        '同一商品最多购买999件';
       Toast({
         context: this,
         selector: '#t-toast',
@@ -104,13 +126,21 @@ Component({
 
     // 去凑单/再逛逛
     gotoBuyMore(e) {
-      const { promotion, storeId = '' } = e.currentTarget.dataset;
-      this.triggerEvent('gocollect', { promotion, storeId });
+      const {
+        promotion,
+        storeId = ''
+      } = e.currentTarget.dataset;
+      this.triggerEvent('gocollect', {
+        promotion,
+        storeId
+      });
     },
 
     // 选中门店
     selectStore(e) {
-      const { storeIndex } = e.currentTarget.dataset;
+      const {
+        storeIndex
+      } = e.currentTarget.dataset;
       const store = this.data.storeGoods[storeIndex];
       const isSelected = !store.isSelected;
       if (store.storeStockShortage && isSelected) {
@@ -137,7 +167,9 @@ Component({
     // 展示规格popup
     specsTap(e) {
       this.isSpecsTap = true;
-      const { goods } = e.currentTarget.dataset;
+      const {
+        goods
+      } = e.currentTarget.dataset;
       this.setData({
         isShowSpecs: true,
         currentGoods: goods,
@@ -155,12 +187,18 @@ Component({
         this.isSpecsTap = false;
         return;
       }
-      const { goods } = e.currentTarget.dataset;
-      this.triggerEvent('goodsclick', { goods });
+      const {
+        goods
+      } = e.currentTarget.dataset;
+      this.triggerEvent('goodsclick', {
+        goods
+      });
     },
 
     gotoCoupons() {
-      wx.navigateTo({ url: '/pages/coupon/coupon-list/index' });
+      wx.navigateTo({
+        url: '/pages/coupon/coupon-list/index'
+      });
     },
   },
 });
