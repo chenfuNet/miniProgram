@@ -178,7 +178,9 @@ Page({
         'Content-Type': 'application/json',
         'Authorization': wx.getStorageSync('userToken')
       },
-      data: {'shopCardId':shopCartId},
+      data: {
+        'shopCardId': shopCartId
+      },
       success: function (res) {
         if (res.data.errorMsg) {
           console.log('zdy-删除购物车----接口报错：' + res.data.errorMsg)
@@ -342,7 +344,7 @@ Page({
       storeId
     } = e.detail.goods;
     wx.navigateTo({
-      url: `/pages/goods/details/index?spuId=spuId&itemId=${itemId}&storeId=${storeId}`,
+      url: `/pages/goods/details/index?spuId=${e.detail.goods.spuId}&itemId=${e.detail.goods.itemId}&storeId=${e.detail.goods.storeId}`,
     });
   },
 
@@ -359,6 +361,7 @@ Page({
         shopCartId
       },
     } = e.detail;
+
     Dialog.confirm({
       content: '确认删除该商品吗?',
       confirmBtn: '确定',

@@ -116,17 +116,17 @@ Page({
 
   onShareTimeline() {
     return {
-      title:"shareTest",
-      path:"pages/usercenter/index",
-      imageUrl:""
+      title: "shareTest",
+      path: "pages/usercenter/index",
+      imageUrl: ""
     }
   },
 
   onShareAppMessage() {
     return {
-      title:"shareTest",
-      path:"pages/usercenter/index",
-      imageUrl:""
+      title: "shareTest",
+      path: "pages/usercenter/index",
+      imageUrl: ""
     }
   },
 
@@ -350,6 +350,7 @@ Page({
   getUserLoginRequest() {
     checkWechatUserLoginStatus(() => {
       console.log('zdy-------登录验证成功')
+      this.gotoUserEditPage()
     });
   },
 
