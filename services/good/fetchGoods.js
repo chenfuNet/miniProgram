@@ -26,7 +26,7 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
   if (tabIndex == 0) {
     return new Promise((resolve) => {
       wx.request({
-        url: 'http://8.136.244.224/web/itemCollection/recommend',
+        url: 'http://47.98.117.117/web/itemCollection/recommend',
         method: 'GET',
         header: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
   } else {
     return new Promise((resolve) => {
       wx.request({
-        url: 'http://8.136.244.224/web/itemCollection/home',
+        url: 'http://47.98.117.117/web/itemCollection/home',
         method: 'POST',
         header: {
           'Content-Type': 'application/json',

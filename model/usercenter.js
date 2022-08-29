@@ -1,5 +1,5 @@
 const requestInfo = {
-  requestUrl: "http://8.136.244.224",
+  requestUrl: "http://47.98.117.117",
   loginApi: "/api/user/thirdLogin"
 }
 
@@ -64,7 +64,8 @@ export function genUsercenter() {
   };
 }
 
-export function updateUserInfoWithWeChat(s, f) {
+export function updateUserInfoWithWeChat(s) {
+  console.log('获取用户头像信息')
   wx.getUserProfile({
     desc: '用于完善会员资料',
     success: (res) => {
@@ -81,7 +82,12 @@ export function updateUserInfoWithWeChat(s, f) {
 }
 
 
-export function checkUserLoginStatus(s) {
+export function checkUserLoginStatus(s, f) {
+  if (f) {
+    console.log('zdy-----有毁掉23123123')
+  } else {
+    console.log('zdy-----没毁掉23123123')
+  }
   if (wx.getStorageSync('userToken').length > 0) { //已登陆 获得用户session
     console.log('zdy-----已登录')
     s()
@@ -92,7 +98,7 @@ export function checkUserLoginStatus(s) {
           //发起网络请求
           userInfo.loginCode = res.code
           wx.request({
-            url: 'http://8.136.244.224/web/user/thirdLogin',
+            url: 'http://47.98.117.117/web/user/thirdLogin',
             method: 'POST',
             header: {
               'Content-Type': 'application/json'
@@ -104,19 +110,22 @@ export function checkUserLoginStatus(s) {
             success: function (res) {
               if (res.data.errorMsg) {
                 console.log('zdy-----接口报错：' + res.data.errorMsg)
+                f(res.data.errorMsg)
               } else {
-                console.log('zdy-----请求成功：' + res.data.token)
-                wx.setStorageSync('userToken', res.data.token)
+                console.log('token：' + res.data.data.token)
+                wx.setStorageSync('userToken', res.data.data.token)
                 s()
               }
             },
             fail: function (err) {
               console.log('zdy-----请求失败' + err.errMsg);
+              f(err.errMsg)
             }
           })
           console.log('登录成功' + res.code)
         } else {
           console.log('zdy-----登录失败！' + res.errMsg)
+          f(err.errMsg)
         }
       }
     });
