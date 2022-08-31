@@ -45,6 +45,7 @@
       <span class="desc-content__title--text">详情介绍</span>
       <t-image t-class="img" src="{{recRightImg}}" />
     </view>
+    <view class="desc-title">{{details.desc}}</view>
     <view wx:if="{{details.desc.length > 0}}" wx:for="{{details.images}}" wx:key="index">
       <t-image t-class="desc-content__img" src="{{item.imageUrl}}" mode="widthFix" />
     </view>
