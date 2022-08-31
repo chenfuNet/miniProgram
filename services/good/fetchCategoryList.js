@@ -20,7 +20,7 @@ export function getCategoryList() {
   // }
   return new Promise((resolve) => {
     wx.request({
-      url: 'http://47.98.117.117/web/category/tree',
+      url: 'https://r-cf.com/web/category/tree',
       method: 'GET',
       header: {
         'Content-Type': 'application/json',

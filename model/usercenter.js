@@ -1,5 +1,5 @@
 const requestInfo = {
-  requestUrl: "http://47.98.117.117",
+  requestUrl: "https://r-cf.com",
   loginApi: "/api/user/thirdLogin"
 }
 
@@ -98,7 +98,7 @@ export function checkUserLoginStatus(s, f) {
           //发起网络请求
           userInfo.loginCode = res.code
           wx.request({
-            url: 'http://47.98.117.117/web/user/thirdLogin',
+            url: 'https://r-cf.com/web/user/thirdLogin',
             method: 'POST',
             header: {
               'Content-Type': 'application/json'

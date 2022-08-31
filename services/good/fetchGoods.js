@@ -1,9 +1,15 @@
-import { config } from '../../config/index';
+import {
+  config
+} from '../../config/index';
 
 /** 获取商品列表 */
 function mockFetchGoodsList(pageIndex = 1, pageSize = 20) {
-  const { delay } = require('../_utils/delay');
-  const { getGoodsList } = require('../../model/goods');
+  const {
+    delay
+  } = require('../_utils/delay');
+  const {
+    getGoodsList
+  } = require('../../model/goods');
   return delay().then(() =>
     getGoodsList(pageIndex, pageSize).map((item) => {
       return {
@@ -20,13 +26,10 @@ function mockFetchGoodsList(pageIndex = 1, pageSize = 20) {
 
 /** 获取商品列表 */
 export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
-  // if (config.useMock) {
-  //   return mockFetchGoodsList(pageIndex, pageSize);
-  // }
   if (tabIndex == 0) {
     return new Promise((resolve) => {
       wx.request({
-        url: 'http://47.98.117.117/web/itemCollection/recommend',
+        url: 'https://r-cf.com/web/itemCollection/recommend',
         method: 'GET',
         header: {
           'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
   } else {
     return new Promise((resolve) => {
       wx.request({
-        url: 'http://47.98.117.117/web/itemCollection/home',
+        url: 'https://r-cf.com/web/itemCollection/home',
         method: 'POST',
         header: {
           'Content-Type': 'application/json',

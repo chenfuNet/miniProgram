@@ -13,6 +13,9 @@ import {
 import {
   cdnBase
 } from '../../../config/index';
+import {
+  addCartGroupData
+} from '../../../services/cart/cart';
 
 const imgPrefix = `${cdnBase}/`;
 
@@ -246,40 +249,7 @@ Page({
     const {
       itemId
     } = this.data;
-    wx.request({
-      url: 'http://47.98.117.117/web/shopCart/add',
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': wx.getStorageSync('userToken')
-      },
-      data: {
-        'itemId': itemId,
-        'quantity': 1
-      },
-      success: function (res) {
-        if (res.data.errorMsg) {
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: res.data.errorMsg,
-          });
-        } else {
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: '加入购物车成功',
-          });
-        }
-      },
-      fail: function (err) {
-        Toast({
-          context: this,
-          selector: '#t-toast',
-          message: '加入购物车失败',
-        });
-      }
-    })
+    addCartGroupData(itemId);
     this.handlePopupHide();
   },
 
@@ -368,22 +338,13 @@ Page({
         maxLinePrice,
         soldNum,
       } = details;
-      // skuList.forEach((item) => {
-      //   skuArray.push({
-      //     skuId: item.skuId,
-      //     quantity: item.stockInfo ? item.stockInfo.stockQuantity : 0,
-      //     specInfo: item.specInfo,
-      //   });
-      // });
       const promotionArray = [];
-      // activityList.forEach((item) => {
-      //   promotionArray.push({
-      //     tag: item.promotionSubCode === 'MYJ' ? '满减' : '满折',
-      //     label: '满100元减99.9元',
-      //   });
-      // });
       this.setData({
         details,
+        minSalePrice: details.price,
+        maxLinePrice: maxLinePrice ? maxLinePrice : parseInt(details.price * 2),
+        soldNum: 0,
+
         // activityList,
         // isStock: details.spuStockQuantity > 0,
         // maxSalePrice: maxSalePrice ? parseInt(maxSalePrice) : 0,

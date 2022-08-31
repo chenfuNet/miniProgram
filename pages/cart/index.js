@@ -1,8 +1,6 @@
 import Dialog from 'tdesign-miniprogram/dialog/index';
 import Toast from 'tdesign-miniprogram/toast/index';
-import {
-  fetchCartGroupData
-} from '../../services/cart/cart';
+import fetchCartGroupData from '../../services/cart/cart';
 
 Page({
   data: {
@@ -172,7 +170,7 @@ Page({
   }) {
 
     wx.request({
-      url: 'http://47.98.117.117/web/shopCart/delete',
+      url: 'https://r-cf.com/web/shopCart/delete',
       method: 'GET',
       header: {
         'Content-Type': 'application/json',

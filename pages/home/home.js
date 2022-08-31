@@ -1,6 +1,13 @@
-import { fetchHome } from '../../services/home/home';
-import { fetchGoodsList } from '../../services/good/fetchGoods';
+import {
+  fetchHome
+} from '../../services/home/home';
+import {
+  fetchGoodsList
+} from '../../services/good/fetchGoods';
 import Toast from 'tdesign-miniprogram/toast/index';
+import {
+  addCartGroupData
+} from '../../services/cart/cart';
 
 Page({
   data: {
@@ -13,7 +20,9 @@ Page({
     autoplay: true,
     duration: 500,
     interval: 5000,
-    navigation: { type: 'dots' },
+    navigation: {
+      type: 'dots'
+    },
   },
 
   goodListPagination: {
@@ -80,7 +89,9 @@ Page({
       });
     }
 
-    this.setData({ goodsListLoadStatus: 1 });
+    this.setData({
+      goodsListLoadStatus: 1
+    });
 
     const pageSize = this.goodListPagination.num;
     let pageIndex =
@@ -131,40 +142,7 @@ Page({
     const {
       itemId
     } = this.data.goodsList[index];
-    wx.request({
-      url: 'http://47.98.117.117/web/shopCart/add',
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': wx.getStorageSync('userToken')
-      },
-      data: {
-        'itemId': itemId,
-        'quantity': 1
-      },
-      success: function (res) {
-        if (res.data.errorMsg) {
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: res.data.errorMsg,
-          });
-        } else {
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: '加入购物车成功',
-          });
-        }
-      },
-      fail: function (err) {
-        Toast({
-          context: this,
-          selector: '#t-toast',
-          message: '加入购物车失败',
-        });
-      }
-    })
+    addCartGroupData(itemId);
   },
 
   navToSearchPage() {

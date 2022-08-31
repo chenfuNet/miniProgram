@@ -4,7 +4,7 @@ Component({
   properties: {
     priceUnit: {
       type: String,
-      value: 'fen',
+      value: 'yuan',
     }, // 价格单位，分 | 元, fen，yuan
     price: {
       type: null,
@@ -45,11 +45,11 @@ Component({
         if (this.properties.priceUnit === 'yuan') {
           const priceSplit = price.toString().split('.');
           pArr[0] = priceSplit[0];
-          pArr[1] = !priceSplit[1]
-            ? '00'
-            : priceSplit[1].length === 1
-            ? `${priceSplit[1]}0`
-            : priceSplit[1];
+          pArr[1] = !priceSplit[1] ?
+            '00' :
+            priceSplit[1].length === 1 ?
+            `${priceSplit[1]}0` :
+            priceSplit[1];
         } else {
           price = Math.round(price * 10 ** 8) / 10 ** 8; // 恢复精度丢失
           price = Math.ceil(price); // 向上取整
@@ -65,7 +65,9 @@ Component({
           pArr[0] = `-${pArr[0]}`;
         }
       }
-      this.setData({ pArr });
+      this.setData({
+        pArr
+      });
     },
   },
 });
