@@ -17,9 +17,14 @@ Page({
   onShow() {
     this.getTabBar().init();
   },
-  onChange() {
+  onChange(e) {
+    console.log('rjl3'+ JSON.stringify(e));
+    const {
+      itemId
+    } = e.detail.item.categoryId;
+    console.log('rjl4');
     wx.navigateTo({
-      url: '/pages/goods/list/index',
+      url: '/pages/goods/list/index?categoryId=${itemId}',
     });
   },
   onLoad() {
