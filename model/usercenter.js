@@ -4,9 +4,9 @@ const requestInfo = {
 }
 
 const userInfo = {
-  avatarUrl: 'https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg',
-  nickName: 'TDesign1 🌟',
-  phoneNumber: '13438358888',
+  avatarUrl: null,
+  nickName: null,
+  phoneNumber: null,
   gender: 2,
   sessionId: "",
   loginCode: "",
@@ -65,32 +65,67 @@ export function genUsercenter() {
 }
 
 export function updateUserInfoWithWeChat(s) {
-  console.log('获取用户头像信息')
-  wx.getUserProfile({
-    desc: '用于完善会员资料',
-    success: (res) => {
-      userInfo.avatarUrl = res.userInfo.avatarUrl;
-      userInfo.nickName = res.userInfo.nickName;
-      s(userInfo);
+  console.log('获取用户信息')
+  wx.request({
+    url: 'https://r-cf.com/web/user/profile',
+    method: 'GET',
+    header: {
+      'Content-Type': 'application/json',
+      'Authorization': wx.getStorageSync('userToken')
     },
-    fail: () => {
+    success: function (res) {
+      if (res?.data?.data?.avatarUrl != null && res?.data?.data?.nickName != null) {
+        userInfo.avatarUrl = res.data.data.avatarUrl;
+        userInfo.nickName = res.data.data.nickName;
+        console.log('zdy---用户信息请求成功' + res.data.data.avatarUrl);
+        s(userInfo);
+      } else {
+        console.log('zdy---用户信息请求成功但是无数据');
+        wx.getUserProfile({
+          desc: '用于完善会员资料',
+          success: (res) => {
+            userInfo.avatarUrl = res.userInfo.avatarUrl;
+            userInfo.nickName = res.userInfo.nickName;
+            wx.request({
+              url: 'https://r-cf.com/web/user/profile/update',
+              method: 'POST',
+              header: {
+                'Content-Type': 'application/json'
+              },
+              data: {
+                'avatarUrl': userInfo.avatarUrl,
+                'nickName': userInfo.nickName
+              },
+              success: function (res) {},
+              fail: function (err) {}
+            })
+            s(userInfo);
+          },
+          fail: () => {
+            userInfo.avatarUrl = "https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg";
+            userInfo.nickName = "微信用户";
+            s(userInfo);
+          }
+        })
+      }
+    },
+    fail: function (err) {
+      console.log('zdy---用户信息失败');
       userInfo.avatarUrl = "https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg";
-      userInfo.nickName = "用户10011";
-      s(userInfo);
+      userInfo.nickName = "微信用户";
+      s(userInfo)
     }
   })
+
+
+
 }
 
 
 export function checkUserLoginStatus(s, f) {
-  if (f) {
-    console.log('zdy-----有毁掉23123123')
-  } else {
-    console.log('zdy-----没毁掉23123123')
-  }
+
   if (wx.getStorageSync('userToken').length > 0) { //已登陆 获得用户session
-    console.log('zdy-----已登录')
-    s()
+    updateUserInfoWithWeChat(s)
   } else { //未登录
     wx.login({
       success(res) {
@@ -108,13 +143,13 @@ export function checkUserLoginStatus(s, f) {
               'code': userInfo.loginCode
             },
             success: function (res) {
-              if (res.data.errorMsg) {
-                console.log('zdy-----接口报错：' + res.data.errorMsg)
-                f(res.data.errorMsg)
-              } else {
-                console.log('token：' + res.data.data.token)
+              if (res?.data?.data?.token) {
                 wx.setStorageSync('userToken', res.data.data.token)
-                s()
+                console.log('zdy-----登录成功')
+                updateUserInfoWithWeChat(s)
+              } else {
+                console.log('zdy-----接口报错：' + res?.data?.errorMsg)
+                f(res.data.errorMsg)
               }
             },
             fail: function (err) {

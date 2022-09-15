@@ -154,12 +154,13 @@ Page({
         this.setData({
           userInfo,
           menuData: [
-            [{
-                title: '退出登录',
-                tit: '',
-                url: '',
-                type: 'login-out',
-              },
+            [
+              // {
+              //   title: '退出登录',
+              //   tit: '',
+              //   url: '',
+              //   type: 'login-out',
+              // },
               {
                 title: '客服热线',
                 tit: '',
@@ -307,16 +308,17 @@ Page({
       var success = (res) => {
         this.setData({
           userInfo: {
-            avatarUrl: res.avatarUrl,
-            nickName: res.nickName,
+            avatarUrl: res?.avatarUrl,
+            nickName: res?.nickName,
           },
           menuData: [
-            [{
-                title: '退出登录',
-                tit: '',
-                url: '',
-                type: 'login-out',
-              },
+            [
+              // {
+              //   title: '退出登录',
+              //   tit: '',
+              //   url: '',
+              //   type: 'login-out',
+              // },
               {
                 title: '去购物车',
                 tit: '',

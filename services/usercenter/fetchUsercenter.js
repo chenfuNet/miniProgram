@@ -37,9 +37,10 @@ export function fetchUserCenter() {
 }
 
 export function updateWeChatUserInfo(s) {
-  checkUserLoginStatus(() => {
+  checkUserLoginStatus((res) => {
     console.log('验证登陆状态成功')
-    updateUserInfoWithWeChat(s);
+    //updateUserInfoWithWeChat(s);
+    s(res)
     console.log('获取缓存token:', wx.getStorageSync('userToken'))
   }, (error) => {
     wx.showToast({
