@@ -1,10 +1,16 @@
 /* eslint-disable no-param-reassign */
-import { config } from '../../config/index';
+import {
+  config
+} from '../../config/index';
 
 /** 获取商品列表 */
 function mockFetchGoodsList(params) {
-  const { delay } = require('../_utils/delay');
-  const { getSearchResult } = require('../../model/search');
+  const {
+    delay
+  } = require('../_utils/delay');
+  const {
+    getSearchResult
+  } = require('../../model/search');
 
   const data = getSearchResult(params);
 
@@ -30,10 +36,33 @@ function mockFetchGoodsList(params) {
 
 /** 获取商品列表 */
 export function fetchGoodsList(params) {
-  if (config.useMock) {
-    return mockFetchGoodsList(params);
-  }
+  const {
+    categoryId
+  } = params;
+  console.log('rjl___' + params);
   return new Promise((resolve) => {
-    resolve('real api');
+    wx.request({
+      url: 'https://r-cf.com/web/itemCollection/filter',
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': wx.getStorageSync('userToken')
+      },
+      data: {
+        'categoryId': categoryId,
+        'page': {
+          'pageSize': 20,
+          'currentPage': 1
+        }
+      },
+      success: function (res) {
+        if (res) {
+          resolve(res.data.data);
+        }
+      },
+      fail: function (err) {
+        console.log('rjl');
+      }
+    })
   });
 }

@@ -55,8 +55,8 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
           'Authorization': wx.getStorageSync('userToken')
         },
         data: {
-          'pageSize': 10,
-          'currentPage': 1
+          'pageSize': pageSize,
+          'currentPage': pageIndex
         },
         success: function (res) {
           if (res) {

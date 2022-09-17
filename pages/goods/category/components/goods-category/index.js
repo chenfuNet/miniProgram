@@ -53,15 +53,18 @@ Component({
       });
     },
     changCategory(event) {
-      const { item } = event.currentTarget.dataset;
+      console.log('rjl1' + JSON.stringify(event));
+      const {
+        item
+      } = event.currentTarget.dataset;
       this.triggerEvent('changeCategory', {
         item,
       });
     },
     setActiveKey(key, subKey) {
+      console.log('rjl' + key);
       return new Promise((resolve) => {
-        this.setData(
-          {
+        this.setData({
             activeKey: key,
             subActiveKey: subKey,
           },
