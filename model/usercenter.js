@@ -72,12 +72,11 @@ export function clearUserProfile() {
 }
 
 export function updateUserInfoWithWeChat(s) {
-  console.log('userToken++++++++' + wx.getStorageSync('userToken'))
-  if (userInfo.token?.length > 0 && userInfo.token.localeCompare(wx.getStorageSync('userToken'))) {
+  if (userInfo.token.length > 0 && userInfo.token == wx.getStorageSync('userToken')) {
     console.log('token一致，不需请求')
     s(userInfo);
     return
-  } else if(wx.getStorageSync('userToken')?.length == 0) {
+  } else if (wx.getStorageSync('userToken')?.length == 0) {
     return
   }
   console.log('获取用户信息')
@@ -94,15 +93,17 @@ export function updateUserInfoWithWeChat(s) {
         userInfo.nickName = res.data.data.nickName;
         console.log('zdy---用户信息请求成功' + res.data.data.avatarUrl);
         userInfo.token = wx.getStorageSync('userToken')
+        console.log('zdy---3');
         s(userInfo);
       } else {
         console.log('zdy---用户信息成功但无数据');
+        console.log('zdy---4');
         wx.getUserProfile({
           desc: '用于完善会员资料',
           success: (res) => {
             userInfo.avatarUrl = res.userInfo.avatarUrl;
             userInfo.nickName = res.userInfo.nickName;
-            console.log('获取api用户信息'+userInfo.avatarUrl+userInfo.nickName)
+            console.log('获取api用户信息' + userInfo.avatarUrl + userInfo.nickName)
             wx.request({
               url: 'https://r-cf.com/web/user/profile/update',
               method: 'POST',
@@ -118,10 +119,11 @@ export function updateUserInfoWithWeChat(s) {
                 console.log('zdy---用户信息上传成功');
               },
               fail: function (err) {
-                console.log('zdy---用户信息上传失败'+err.errMsg);
+                console.log('zdy---用户信息上传失败' + err.errMsg);
               }
             })
             userInfo.token = wx.getStorageSync('userToken')
+            console.log('zdy---5');
             s(userInfo);
           },
           fail: () => {
@@ -143,9 +145,11 @@ export function updateUserInfoWithWeChat(s) {
                 console.log('zdy---用户信息上传成功');
               },
               fail: function (err) {
-                console.log('zdy---用户信息上传失败'+err.errMsg);
+                console.log('zdy---用户信息上传失败' + err.errMsg);
               }
             })
+
+            console.log('zdy---6');
             s(userInfo);
           }
         })
