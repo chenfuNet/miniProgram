@@ -78,7 +78,7 @@ export default function fetchCartGroupData(params) {
     } = require('../../model/cart');
 
     let token = wx.getStorageSync('userToken');
-    console.log('获取token：', token)
+    console.log('zdy-购物车---获取token：', token)
 
     wx.request({
       url: 'https://r-cf.com/web/shopCart/listAll',

@@ -10,6 +10,7 @@ const userInfo = {
   gender: 2,
   sessionId: "",
   loginCode: "",
+  token: ""
 };
 const countsData = [{
     num: 2,
@@ -64,7 +65,21 @@ export function genUsercenter() {
   };
 }
 
+export function clearUserProfile() {
+  userInfo.avatarUrl = null
+  userInfo.nickName = null
+  userInfo.token = ""
+}
+
 export function updateUserInfoWithWeChat(s) {
+  console.log('userToken++++++++' + wx.getStorageSync('userToken'))
+  if (userInfo.token?.length > 0 && userInfo.token.localeCompare(wx.getStorageSync('userToken'))) {
+    console.log('token一致，不需请求')
+    s(userInfo);
+    return
+  } else if(wx.getStorageSync('userToken')?.length == 0) {
+    return
+  }
   console.log('获取用户信息')
   wx.request({
     url: 'https://r-cf.com/web/user/profile',
@@ -74,36 +89,63 @@ export function updateUserInfoWithWeChat(s) {
       'Authorization': wx.getStorageSync('userToken')
     },
     success: function (res) {
-      if (res?.data?.data?.avatarUrl != null && res?.data?.data?.nickName != null) {
+      if (res?.data?.data?.avatarUrl?.length > 0 && res?.data?.data?.nickName?.length > 0) {
         userInfo.avatarUrl = res.data.data.avatarUrl;
         userInfo.nickName = res.data.data.nickName;
         console.log('zdy---用户信息请求成功' + res.data.data.avatarUrl);
+        userInfo.token = wx.getStorageSync('userToken')
         s(userInfo);
       } else {
-        console.log('zdy---用户信息请求成功但是无数据');
+        console.log('zdy---用户信息成功但无数据');
         wx.getUserProfile({
           desc: '用于完善会员资料',
           success: (res) => {
             userInfo.avatarUrl = res.userInfo.avatarUrl;
             userInfo.nickName = res.userInfo.nickName;
+            console.log('获取api用户信息'+userInfo.avatarUrl+userInfo.nickName)
             wx.request({
               url: 'https://r-cf.com/web/user/profile/update',
               method: 'POST',
               header: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': wx.getStorageSync('userToken')
               },
               data: {
                 'avatarUrl': userInfo.avatarUrl,
                 'nickName': userInfo.nickName
               },
-              success: function (res) {},
-              fail: function (err) {}
+              success: function (res) {
+                console.log('zdy---用户信息上传成功');
+              },
+              fail: function (err) {
+                console.log('zdy---用户信息上传失败'+err.errMsg);
+              }
             })
+            userInfo.token = wx.getStorageSync('userToken')
             s(userInfo);
           },
           fail: () => {
             userInfo.avatarUrl = "https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg";
             userInfo.nickName = "微信用户";
+            userInfo.token = wx.getStorageSync('userToken')
+            wx.request({
+              url: 'https://r-cf.com/web/user/profile/update',
+              method: 'POST',
+              header: {
+                'Content-Type': 'application/json',
+                'Authorization': wx.getStorageSync('userToken')
+              },
+              data: {
+                'avatarUrl': userInfo.avatarUrl,
+                'nickName': userInfo.nickName
+              },
+              success: function (res) {
+                console.log('zdy---用户信息上传成功');
+              },
+              fail: function (err) {
+                console.log('zdy---用户信息上传失败'+err.errMsg);
+              }
+            })
             s(userInfo);
           }
         })
@@ -127,6 +169,7 @@ export function checkUserLoginStatus(s, f) {
   if (wx.getStorageSync('userToken').length > 0) { //已登陆 获得用户session
     updateUserInfoWithWeChat(s)
   } else { //未登录
+    clearUserProfile();
     wx.login({
       success(res) {
         if (res.code) {
@@ -144,7 +187,7 @@ export function checkUserLoginStatus(s, f) {
             },
             success: function (res) {
               if (res?.data?.data?.token) {
-                wx.setStorageSync('userToken', res.data.data.token)
+                wx.setStorageSync('userToken', res?.data?.data?.token)
                 console.log('zdy-----登录成功')
                 updateUserInfoWithWeChat(s)
               } else {

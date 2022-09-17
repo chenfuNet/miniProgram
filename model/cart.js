@@ -156,33 +156,34 @@ export function genCartGroupData(data) {
 
   for (var val in data.data) {
     var goods = data.data[val]
-
-    goodsList.push({
-      shopCartId: goods.shopCartId,
-      uid: '88888888205468',
-      saasId: '88888888',
-      storeId: '1000',
-      spuId: String(goods.item.itemId),
-      itemId: String(goods.item.itemId),
-      skuId: '135691622',
-      isSelected: 1,
-      thumb: goods.item.images[0]?.imageUrl,
-      title: goods.item.title,
-      primaryImage: goods.item.images[0]?.imageUrl,
-      quantity: 1,
-      stockStatus: true,
-      stockQuantity: 3,
-      price: goods.item.price * 100,
-      originPrice: goods.item.price * 100,
-      tagPrice: null,
-      titlePrefixTags: [],
-      roomId: null,
-      specInfo: [],
-      joinCartTime: '2020-06-29T07:55:40.000+0000',
-      available: 1,
-      putOnSale: 1,
-      etitle: null,
-    })
+    if(goods.item != null) {
+      goodsList.push({
+        shopCartId: goods.shopCartId,
+        uid: '88888888205468',
+        saasId: '88888888',
+        storeId: '1000',
+        spuId: String(goods?.item?.itemId),
+        itemId: String(goods?.item?.itemId),
+        skuId: '135691622',
+        isSelected: 1,
+        thumb: goods?.item?.images[0]?.imageUrl,
+        title: goods?.item?.title,
+        primaryImage: goods?.item?.images[0]?.imageUrl,
+        quantity: 1,
+        stockStatus: true,
+        stockQuantity: 3,
+        price: goods?.item?.price,
+        originPrice: goods?.item?.price,
+        tagPrice: null,
+        titlePrefixTags: [],
+        roomId: null,
+        specInfo: [],
+        joinCartTime: '2020-06-29T07:55:40.000+0000',
+        available: 1,
+        putOnSale: 1,
+        etitle: null,
+      })
+    }
   }
   resp.data.storeGoods[0].promotionGoodsList[0].goodsPromotionList = goodsList
   // console.log('zdy-购物车数据解析：' + resp.data.storeGoods[0].promotionGoodsList[0].goodsPromotionList)

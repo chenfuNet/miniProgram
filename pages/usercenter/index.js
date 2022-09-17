@@ -4,6 +4,7 @@ import {
   checkWechatUserLoginStatus
 } from '../../services/usercenter/fetchUsercenter';
 import Toast from 'tdesign-miniprogram/toast/index';
+import { updateUserInfoWithWeChat,clearUserProfile } from '../../model/usercenter';
 
 const menuData = [
   // [{
@@ -99,12 +100,13 @@ Page({
 
   onLoad() {
     this.getVersionInfo();
-    this.getUserLoginRequest();
+    this.getUserInfo();
   },
 
   onShow() {
     this.getTabBar().init();
     // this.init();
+    this.getUserInfo();
   },
   onPullDownRefresh() {
     // this.init();
@@ -201,6 +203,15 @@ Page({
         wx.switchTab({
           url: '/pages/cart/index',
         });
+        // wx.getUserProfile({
+        //   desc: '用于完善会员资料',
+        //   success: (res) => {
+            
+        //   },
+        //   fail: () => {
+
+        //   }
+        // })
         break;
       }
       case 'login-out': {
@@ -211,6 +222,7 @@ Page({
           icon: '',
           duration: 1000,
         });
+        clearUserProfile();
         wx.setStorageSync('userToken', "")
         this.setData({
           userInfo: {},
@@ -313,12 +325,12 @@ Page({
           },
           menuData: [
             [
-              // {
-              //   title: '退出登录',
-              //   tit: '',
-              //   url: '',
-              //   type: 'login-out',
-              // },
+              {
+                title: '退出登录',
+                tit: '',
+                url: '',
+                type: 'login-out',
+              },
               {
                 title: '去购物车',
                 tit: '',
@@ -354,6 +366,41 @@ Page({
       console.log('zdy-------登录验证成功')
       this.gotoUserEditPage()
     });
+  },
+
+  getUserInfo() {
+    updateUserInfoWithWeChat((res)=>{
+        this.setData({
+          userInfo: {
+            avatarUrl: res?.avatarUrl,
+            nickName: res?.nickName,
+          },
+          menuData: [
+            [
+              {
+                title: '退出登录',
+                tit: '',
+                url: '',
+                type: 'login-out',
+              },
+              {
+                title: '去购物车',
+                tit: '',
+                url: '',
+                type: 'gotoShopCar',
+              },
+              {
+                title: '客服热线',
+                tit: '',
+                url: '',
+                type: 'service',
+                icon: 'service',
+              },
+            ]
+          ],
+          currAuthStep: 2
+        });
+      })
   },
 
   getVersionInfo() {
