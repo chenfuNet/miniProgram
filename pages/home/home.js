@@ -94,14 +94,16 @@ Page({
     });
 
     const pageSize = this.goodListPagination.num;
-    let pageIndex =
-      this.privateData.tabIndex * pageSize + this.goodListPagination.index + 1;
+    let pageIndex = this.goodListPagination.index + 1;
     if (fresh) {
       pageIndex = 0;
     }
 
     try {
-      const nextList = await fetchGoodsList(this.privateData.tabIndex, pageIndex, pageSize);
+      const {
+        nextList,
+        totalPage
+      } = await fetchGoodsList(this.privateData.tabIndex, pageIndex, pageSize);
       const tabIndex = this.privateData.tabIndex;
       if (tabIndex == 0) {
         this.setData({
@@ -109,9 +111,11 @@ Page({
           goodsListLoadStatus: 2,
         });
       } else {
+        const status = totalPage <= (pageIndex + 1) ? 2 : 0;
+        console.log('rjl'+status);
         this.setData({
           goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
-          goodsListLoadStatus: 0,
+          goodsListLoadStatus: status,
         });
       }
       this.goodListPagination.index = pageIndex;

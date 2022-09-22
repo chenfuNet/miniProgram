@@ -37,7 +37,10 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
         },
         success: function (res) {
           if (res) {
-            resolve(res.data.data);
+            resolve({
+              nextList: res.data.data,
+              totalPage: 1,
+            });
           }
         },
         fail: function (err) {
@@ -60,7 +63,10 @@ export function fetchGoodsList(tabIndex = 0, pageIndex = 1, pageSize = 20) {
         },
         success: function (res) {
           if (res) {
-            resolve(res.data.data.listData);
+            resolve({
+              nextList: res.data.data.listData,
+              totalPage: res.data.data.totalPage,
+            });
           }
         },
         fail: function (err) {
