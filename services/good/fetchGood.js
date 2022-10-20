@@ -39,11 +39,6 @@ export function fetchGood(ID = 0) {
           });
         } else {
           resolve(res.data.data)
-          Toast({
-            context: this,
-            selector: '#t-toast',
-            message: '商品详情拉取成功',
-          });
         }
       },
       fail: function (err) {
