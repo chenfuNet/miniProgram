@@ -138,9 +138,29 @@ page {
   font-size: 24rpx;
   line-height: 32rpx;
 }
+
+.p_test1 {
+  text-align: center;
+  margin-top: 50rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+
+.p_test2 {
+  text-align: center;
+  margin-top: 14rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+
 .cell-box .order-group__left {
   margin-right: 0;
 }
+
 .cell-box .t-cell-padding {
   padding: 24rpx 18rpx 24rpx 32rpx;
 }
