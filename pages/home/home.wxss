@@ -37,7 +37,7 @@ page {
 
 .home-page-header .t-image__swiper {
   width: 100%;
-  height: 350rpx;
+  height: 300rpx;
 }
 
 .home-page-container .t-tabs {
