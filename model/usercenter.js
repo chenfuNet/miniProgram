@@ -127,7 +127,7 @@ export function updateUserInfoWithWeChat(s) {
             s(userInfo);
           },
           fail: () => {
-            userInfo.avatarUrl = "https://we-retail-static-1300977798.cos.ap-guangzhou.myqcloud.com/retail-ui/components-exp/avatar/avatar-1.jpg";
+            userInfo.avatarUrl = "";
             userInfo.nickName = "微信用户";
             userInfo.token = wx.getStorageSync('userToken')
             wx.request({

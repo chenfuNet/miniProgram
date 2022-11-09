@@ -2,8 +2,7 @@ Component({
   properties: {
     imgUrl: {
       type: String,
-      value:
-        'https://cdn-we-retail.ym.tencent.com/miniapp/template/empty-cart.png',
+      value: 'https://cdn-we-retail.ym.tencent.com/miniapp/template/empty-cart.png',
     },
     tip: {
       type: String,
@@ -17,7 +16,10 @@ Component({
   data: {},
   methods: {
     handleClick() {
-      this.triggerEvent('handleClick');
+      console.log('zdy-购物车---去首页')
+      wx.switchTab({
+        url: '/pages/home/home',
+      })
     },
   },
 });
