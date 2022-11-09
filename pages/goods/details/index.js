@@ -386,6 +386,15 @@ Page({
     }
   },
 
+  onShareTimeline() {
+    const customInfo = {
+      imageUrl: this.data.details.images[0],
+      title: this.data.details.title,
+      query: `/pages/goods/details/index?itemId=${this.data.itemId}`,
+    };
+    return customInfo;
+  },
+
   onShareAppMessage() {
     // 自定义的返回信息
     const {
