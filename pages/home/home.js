@@ -139,6 +139,24 @@ Page({
     });
   },
 
+  onShareTimeline() {
+    const customInfo = {
+      imageUrl: '/images/logo.jpeg',
+      title: '写忆出品',
+      query: 'pages/home/home',
+    };
+    return customInfo;
+  },
+
+  onShareAppMessage() {
+    const customInfo = {
+      imageUrl: '/images/logo.jpeg',
+      title: '写忆出品',
+      path: 'pages/home/home',
+    };
+    return customInfo;
+  },
+
   goodListAddCartHandle(e) {
     const {
       index

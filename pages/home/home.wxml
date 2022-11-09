@@ -1,39 +1,16 @@
 <view style="text-align: center" wx:if="{{pageLoading}}">
-	<t-loading
-	  theme="circular"
-	  size="40rpx"
-	  loading
-	  t-class-indicator="t-class-indicator"
-	>
-		<span slot="text" class="loading-text">加载中...</span>
-	</t-loading>
+  <t-loading theme="circular" size="40rpx" loading t-class-indicator="t-class-indicator">
+    <span slot="text" class="loading-text">加载中...</span>
+  </t-loading>
 </view>
 <view class="home-page-header">
-		<t-image src="https://cdn-we-retail.ym.tencent.com/tsr/goods/nz-09a.png" t-class="t-image__swiper" mode="aspectFill"/>
+  <t-image src="/images/logo.jpeg" t-class="t-image__swiper" mode="scaleToFill" />
 </view>
 <view class="home-page-container">
-	<t-tabs
-	  t-class="t-tabs"
-	  t-class-active="t-class-item"
-	  t-class-track="t-class-track"
-	  defaultValue="{{0}}"
-	  bind:change="tabChangeHandle"
-	>
-		<t-tab-panel
-		  wx:for="{{tabList}}"
-		  wx:for-index="index"
-		  wx:key="index"
-		  label="{{item.text}}"
-		  value="{{item.key}}"
-		/>
-	</t-tabs>
-	<goods-list
-	  wr-class="goods-list-container"
-	  goodsList="{{goodsList}}"
-	  bind:click="goodListClickHandle"
-	  bind:addcart="goodListAddCartHandle"
-	/>
-	<load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
-	<t-toast id="t-toast" />
+  <t-tabs t-class="t-tabs" t-class-active="t-class-item" t-class-track="t-class-track" defaultValue="{{0}}" bind:change="tabChangeHandle">
+    <t-tab-panel wx:for="{{tabList}}" wx:for-index="index" wx:key="index" label="{{item.text}}" value="{{item.key}}" />
+  </t-tabs>
+  <goods-list wr-class="goods-list-container" goodsList="{{goodsList}}" bind:click="goodListClickHandle" bind:addcart="goodListAddCartHandle" />
+  <load-more list-is-empty="{{!goodsList.length}}" status="{{goodsListLoadStatus}}" bind:retry="onReTry" />
+  <t-toast id="t-toast" />
 </view>
-
