@@ -388,10 +388,11 @@ Page({
 
   onShareTimeline() {
     const customInfo = {
-      imageUrl: this.data.details.images[0],
+      imageUrl: this.data.details.images[0].imageUrl,
       title: this.data.details.title,
-      query: `/pages/goods/details/index?itemId=${this.data.itemId}`,
+      query: `/pages/goods/details/index?itemId=${this.data.details.itemId}`,
     };
+    console.log('rjl+++', JSON.stringify(customInfo));
     return customInfo;
   },
 
@@ -406,7 +407,7 @@ Page({
       shareSubTitle = selectedAttrStr.slice(count + 1, selectedAttrStr.length);
     }
     const customInfo = {
-      imageUrl: this.data.details.images[0],
+      imageUrl: this.data.details.images[0].imageUrl,
       title: this.data.details.title + shareSubTitle,
       path: `/pages/goods/details/index?itemId=${this.data.itemId}`,
     };
@@ -453,6 +454,8 @@ Page({
   },
 
   onLoad(query) {
+    console.log('rjl+++', JSON.stringify(query));
+
     const {
       itemId
     } = query;
@@ -460,7 +463,5 @@ Page({
       itemId: itemId,
     });
     this.getDetail(itemId);
-    // this.getCommentsList(spuId);
-    // this.getCommentsStatistics(spuId);
   },
 });
