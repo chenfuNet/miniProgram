@@ -387,8 +387,10 @@ Page({
   },
 
   onShareTimeline() {
+    var chr = this.data.details.images[0].imageUrl.split("?");
+    const imageUrlString = chr[0];
     const customInfo = {
-      imageUrl: this.data.details.images[0].imageUrl,
+      imageUrl: imageUrlString,
       title: this.data.details.title,
       query: `itemId=${this.data.details.itemId}`,
     };
