@@ -390,9 +390,8 @@ Page({
     const customInfo = {
       imageUrl: this.data.details.images[0].imageUrl,
       title: this.data.details.title,
-      query: `/pages/goods/details/index?itemId=${this.data.details.itemId}`,
+      query: `itemId=${this.data.details.itemId}`,
     };
-    console.log('rjl+++', JSON.stringify(customInfo));
     return customInfo;
   },
 
