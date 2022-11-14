@@ -117,19 +117,21 @@ Page({
   },
 
   onShareTimeline() {
-    return {
-      title: "shareTest",
-      path: "pages/usercenter/index",
-      imageUrl: ""
-    }
+    const customInfo = {
+      imageUrl: '/images/logo.jpeg',
+      title: '写忆出品',
+      query: 'pages/home/home',
+    };
+    return customInfo;
   },
 
   onShareAppMessage() {
-    return {
-      title: "shareTest",
-      path: "pages/usercenter/index",
-      imageUrl: ""
-    }
+    const customInfo = {
+      imageUrl: '/images/logo.jpeg',
+      title: '写忆出品',
+      path: 'pages/home/home',
+    };
+    return customInfo;
   },
 
   fetUseriInfoHandle() {

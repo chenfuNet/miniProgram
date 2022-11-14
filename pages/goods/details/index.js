@@ -387,10 +387,12 @@ Page({
   },
 
   onShareTimeline() {
+    var chr = this.data.details.images[0].imageUrl.split("?");
+    const imageUrlString = chr[0];
     const customInfo = {
-      imageUrl: this.data.details.images[0],
+      imageUrl: imageUrlString,
       title: this.data.details.title,
-      query: `/pages/goods/details/index?itemId=${this.data.itemId}`,
+      query: `itemId=${this.data.details.itemId}`,
     };
     return customInfo;
   },
@@ -406,7 +408,7 @@ Page({
       shareSubTitle = selectedAttrStr.slice(count + 1, selectedAttrStr.length);
     }
     const customInfo = {
-      imageUrl: this.data.details.images[0],
+      imageUrl: this.data.details.images[0].imageUrl,
       title: this.data.details.title + shareSubTitle,
       path: `/pages/goods/details/index?itemId=${this.data.itemId}`,
     };
@@ -453,6 +455,8 @@ Page({
   },
 
   onLoad(query) {
+    console.log('rjl+++', JSON.stringify(query));
+
     const {
       itemId
     } = query;
@@ -460,7 +464,5 @@ Page({
       itemId: itemId,
     });
     this.getDetail(itemId);
-    // this.getCommentsList(spuId);
-    // this.getCommentsStatistics(spuId);
   },
 });

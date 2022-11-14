@@ -1,5 +1,8 @@
 export default () => {
-  if (!wx.canIUse('getUpdateManager')) {
+
+  let startParamObj = wx.getLaunchOptionsSync();
+
+  if (!wx.canIUse('getUpdateManager') || startParamObj.scene == 1154) {
     return;
   }
 
