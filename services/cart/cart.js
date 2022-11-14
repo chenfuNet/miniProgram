@@ -34,8 +34,11 @@ export function addCartGroupData(params) {
         },
         success: function (res) {
           console.log('rjl6');
-
-          if (res.data.errorMsg) {
+          if (parseInt(res.data.errorCode) == 5001) {
+            wx.showToast({
+              title: '已加入购物车',
+            });
+          } else if (res.data.errorMsg) {
             wx.showToast({
               title: res.data.errorMsg,
               icon: 'error'
@@ -95,9 +98,15 @@ export default function fetchCartGroupData(params) {
           console.log('zdy-购物车---请求成功：' + res.data)
           resolve(delay().then(() => genCartGroupData(res.data)));
         }
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
       },
       fail: function (err) {
         console.log('zdy-购物车----请求失败' + err.errMsg);
+        wx.stopPullDownRefresh({
+          success: (res) => {},
+        })
       }
     })
   });
