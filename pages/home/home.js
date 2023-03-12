@@ -112,7 +112,7 @@ Page({
         });
       } else {
         const status = totalPage <= (pageIndex + 1) ? 2 : 0;
-        console.log('rjl'+status);
+        console.log('rjl' + status);
         this.setData({
           goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
           goodsListLoadStatus: status,
@@ -164,6 +164,13 @@ Page({
     const {
       itemId
     } = this.data.goodsList[index];
+    if (!wx.getStorageSync('userToken').length > 0) {
+      wx.showToast({
+        title: '请登录',
+        icon: 'error'
+      })
+      return
+    }
     addCartGroupData(itemId);
   },
 

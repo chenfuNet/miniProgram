@@ -93,8 +93,8 @@ Page({
       type: 'fraction'
     },
     current: 0,
-    autoplay: true,
-    duration: 500,
+    autoplay: false,
+    duration: 200,
     interval: 5000,
     soldNum: 0, // 已售数量
   },
