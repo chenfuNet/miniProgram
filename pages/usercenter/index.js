@@ -305,7 +305,7 @@ Page({
 
   call() {
     wx.makePhoneCall({
-      phoneNumber: this.data.customerServiceInfo.servicePhone,
+      phoneNumber: '18686869729',
     });
   },
 

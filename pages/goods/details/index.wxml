@@ -53,6 +53,13 @@
   </view>
   <view class="goods-bottom-operation">
     <buy-bar jumpArray="{{jumpArray}}" soldout="{{soldout}}" isStock="{{isStock}}" shopCartNum="{{cartNum}}" buttonType="{{buttonType}}" bind:toAddCart="toAddCart" bind:toNav="toNav" bind:toBuyNow="buyItNow" class="goods-details-card" />
+    <t-popup visible="{{showMakePhone}}" placement="bottom" bind:visible-change="closeMakePhone" data-index="2">
+      <view class="popup-content">
+        <view class="popup-phone {{showKefu ? 'border-bottom-1px' : ''}}" bind:tap="call">电话客服</view>
+        <button class="popup-phone border-bottom-1px online" open-type="contact" wx:if="{{showKefu}}">在线客服</button>
+        <view class="popup-close" bind:tap="closeMakePhone">取消</view>
+      </view>
+    </t-popup>
   </view>
   <goods-specs-popup id="goodsSpecsPopup" show="{{isSpuSelectPopupShow}}" title="{{details.title || ''}}" src="{{specImg ? specImg : primaryImage}}" specList="{{details.specList || []}}" skuList="{{skuArray}}" limitBuyInfo="{{details.limitInfo[0].text || ''}}" bind:closeSpecsPopup="handlePopupHide" bind:change="chooseSpecItem" bind:changeNum="changeNum" bind:addCart="addCart" bind:buyNow="gotoBuy" bind:specsConfirm="specsConfirm" isStock="{{isStock}}" outOperateStatus="{{outOperateStatus}}">
     <view slot="goods-price">

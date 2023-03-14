@@ -32,6 +32,8 @@ const obj2Params = (obj = {}, encode = false) => {
 
 Page({
   data: {
+    showMakePhone: false,
+    showKefu: true,
     commentsList: [],
     commentsStatistics: {
       badCount: 0,
@@ -63,10 +65,9 @@ Page({
         iconName: 'home',
       },
       {
-        title: '购物车',
-        url: '/pages/cart/index',
-        iconName: 'cart',
-        showCartNum: true,
+        title: '联系商家',
+        url: 'contact',
+        iconName: 'service',
       },
     ],
     isStock: true,
@@ -116,7 +117,9 @@ Page({
   buyItNow() {
     this.showSkuSelectPopup(1);
   },
-
+  toContact() {
+    console.log('rjl1231');
+  },
   toAddCart() {
     this.showSkuSelectPopup(2);
   },
@@ -125,8 +128,30 @@ Page({
     const {
       url
     } = e.detail;
-    wx.switchTab({
-      url: url,
+    if (url === 'contact') {
+      this.openMakePhone();
+    } else {
+      wx.switchTab({
+        url: url,
+      });
+    }
+  },
+  openMakePhone() {
+    console.log('rjljlsadf');
+    this.setData({
+      showMakePhone: true
+    });
+  },
+
+  closeMakePhone() {
+    this.setData({
+      showMakePhone: false
+    });
+  },
+
+  call() {
+    wx.makePhoneCall({
+      phoneNumber: '18686869729',
     });
   },
 
@@ -168,7 +193,6 @@ Page({
     });
     this.getSkuItem(specList, selectedSku);
   },
-
   getSkuItem(specList, selectedSku) {
     const {
       skuArray,

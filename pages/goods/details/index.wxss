@@ -1,4 +1,5 @@
 @import '../../../style/global.wxss';
+
 page {
   width: 100vw;
 }
@@ -77,11 +78,7 @@ page {
   display: flex;
 }
 
-.goods-detail-page
-  .goods-info
-  .goods-activity
-  .tags-container
-  .goods-activity-tag {
+.goods-detail-page .goods-info .goods-activity .tags-container .goods-activity-tag {
   background: #ffece9;
   color: #fa4126;
   font-size: 24rpx;
@@ -243,20 +240,14 @@ page {
   margin-top: 48rpx;
 }
 
-.popup-sku-header
-  .popup-sku-header__goods-info
-  .popup-sku__price
-  .popup-sku__price-num {
+.popup-sku-header .popup-sku-header__goods-info .popup-sku__price .popup-sku__price-num {
   font-size: 64rpx;
   color: #fa4126;
   font-weight: bold;
   font-family: DIN Alternate;
 }
 
-.popup-sku-header
-  .popup-sku-header__goods-info
-  .popup-sku__price
-  .popup-sku__price-del {
+.popup-sku-header .popup-sku-header__goods-info .popup-sku__price .popup-sku__price-del {
   position: relative;
   font-weight: normal;
   left: 12rpx;
@@ -265,18 +256,12 @@ page {
   font-size: 32rpx;
 }
 
-.popup-sku-header
-  .popup-sku-header__goods-info
-  .popup-sku__price
-  .popup-sku__price-symbol {
+.popup-sku-header .popup-sku-header__goods-info .popup-sku__price .popup-sku__price-symbol {
   font-size: 36rpx;
   color: #fa4126;
 }
 
-.popup-sku-header
-  .popup-sku-header__goods-info
-  .popup-sku__price
-  .popup-sku__price-max-num {
+.popup-sku-header .popup-sku-header__goods-info .popup-sku__price .popup-sku__price-max-num {
   font-size: 48rpx;
 }
 
@@ -358,4 +343,32 @@ page {
   line-height: 40rpx;
   font-size: 28rpx;
   font-weight: 400;
+}
+
+.popup-content .popup-phone,
+.popup-content .popup-close {
+  background: #fff;
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 30rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333;
+}
+
+.popup-content .popup-phone.online {
+  margin-bottom: 20rpx;
+}
+
+.popup-content .popup-phone.online::after {
+  content: none;
+}
+
+.popup-content .popup-close {
+  color: #333;
+  border: 0;
+  margin-top: 16rpx;
 }

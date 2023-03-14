@@ -164,13 +164,6 @@ Page({
     const {
       itemId
     } = this.data.goodsList[index];
-    if (!wx.getStorageSync('userToken').length > 0) {
-      wx.showToast({
-        title: '请登录',
-        icon: 'error'
-      })
-      return
-    }
     addCartGroupData(itemId);
   },
 
